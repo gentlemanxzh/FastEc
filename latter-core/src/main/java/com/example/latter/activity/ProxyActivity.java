@@ -12,7 +12,7 @@ import me.yokeyword.fragmentation.SupportActivity;
 /**
  * @author gentleman
  * @date 2018/5/13
- * @function 容器Activity
+ * @function 容器Activity，相当于BaseActivity
  */
 
 public abstract class ProxyActivity extends SupportActivity {
@@ -38,6 +38,7 @@ public abstract class ProxyActivity extends SupportActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //进行资源回收
         System.gc();
         System.runFinalization();
     }

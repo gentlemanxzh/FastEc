@@ -3,6 +3,7 @@ package com.example.gentleman.fastec;
 import android.app.Application;
 
 import com.example.latte.ec.icon.FontEcModule;
+import com.example.latter.app.ConfigType;
 import com.example.latter.app.Latte;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
@@ -21,6 +22,7 @@ public class ExampleApp extends Application {
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
                 .configure();
+
     }
 
 
