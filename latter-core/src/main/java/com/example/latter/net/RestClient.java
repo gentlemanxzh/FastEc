@@ -7,8 +7,9 @@ import com.example.latter.net.callback.IFailure;
 import com.example.latter.net.callback.IRequest;
 import com.example.latter.net.callback.ISuccess;
 import com.example.latter.net.callback.RequestCallbacks;
-import com.example.latter.ui.LatteLoader;
-import com.example.latter.ui.LoaderStyle;
+import com.example.latter.net.download.DownloadHandler;
+import com.example.latter.ui.loader.LatteLoader;
+import com.example.latter.ui.loader.LoaderStyle;
 
 import java.io.File;
 import java.util.Map;
@@ -32,6 +33,9 @@ public class RestClient {
     private final String URL;
     private static final Map<String, Object> PARAMS = RestCreator.getParams();
     private final IRequest REQUEST;
+    private final String DOWNLOAD_DIR;
+    private final String EXTENSION;
+    private final String NAME;
     private final ISuccess SUCCESS;
     private final IFailure FAILURE;
     private final IError ERROR;
@@ -43,6 +47,9 @@ public class RestClient {
     public RestClient(String URL,
                       Map<String, Object> params,
                       IRequest request,
+                      String downloadDir,
+                      String extension,
+                      String name,
                       ISuccess success,
                       IFailure failure,
                       IError error,
@@ -53,6 +60,9 @@ public class RestClient {
         this.URL = URL;
         params.putAll(params);
         this.REQUEST = request;
+        this.DOWNLOAD_DIR = downloadDir;
+        this.EXTENSION = extension;
+        this.NAME = name;
         this.SUCCESS = success;
         this.FAILURE = failure;
         this.ERROR = error;
@@ -99,9 +109,9 @@ public class RestClient {
                 call = service.delete(URL, PARAMS);
                 break;
             case UPLOAD:
-                final RequestBody requestBody = RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()),FILE);
-                final MultipartBody.Part body = MultipartBody.Part.createFormData("file",FILE.getName(),requestBody);
-                call = RestCreator.getRestService().upload(URL,body);
+                final RequestBody requestBody = RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), FILE);
+                final MultipartBody.Part body = MultipartBody.Part.createFormData("file", FILE.getName(), requestBody);
+                call = service.upload(URL, body);
                 break;
             default:
                 break;
@@ -153,6 +163,10 @@ public class RestClient {
 
     public final void delete() {
         request(HttpMethod.DELETE);
+    }
+
+    public final void download(){
+        new DownloadHandler(URL,REQUEST,DOWNLOAD_DIR,EXTENSION,NAME,SUCCESS,FAILURE,ERROR).handleDownload();
     }
 
 

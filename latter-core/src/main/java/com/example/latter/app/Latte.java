@@ -13,14 +13,14 @@ import java.util.HashMap;
 public final class Latte {
 
     public static Configurator init(Context context){
-        getConfigurators().put(ConfigType.APPLICATION_CONTEXT.name(),context.getApplicationContext());
+        getConfigurators().put(ConfigType.APPLICATION_CONTEXT,context.getApplicationContext());
         return Configurator.getInstance();
     }
 
     /**
      * 获取配置信息的HashMap集合
      */
-    public static HashMap<String,Object> getConfigurators(){
+    public static HashMap<Object,Object> getConfigurators(){
         return Configurator.getInstance().getLatteConfigs();
     }
 
@@ -28,6 +28,6 @@ public final class Latte {
      * 获取配置信息中的getApplicationContext
      */
     public static Context getApplicationContext(){
-        return (Context)getConfigurators().get(ConfigType.APPLICATION_CONTEXT.name());
+        return Configurator.getInstance().getConfiguration(ConfigType.APPLICATION_CONTEXT);
     }
 }

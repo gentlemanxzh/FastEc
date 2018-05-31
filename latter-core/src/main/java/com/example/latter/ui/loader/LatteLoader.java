@@ -1,4 +1,4 @@
-package com.example.latter.ui;
+package com.example.latter.ui.loader;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatDialog;
@@ -7,7 +7,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.latter.R;
-import com.example.latter.util.DimenUtil;
+import com.example.latter.util.dimen.DimenUtil;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;

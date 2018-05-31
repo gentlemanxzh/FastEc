@@ -1,4 +1,4 @@
-package com.example.latter.ui;
+package com.example.latter.ui.loader;
 
 /**
  * @author gentleman

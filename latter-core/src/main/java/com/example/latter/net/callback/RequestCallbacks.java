@@ -2,9 +2,8 @@ package com.example.latter.net.callback;
 
 import android.os.Handler;
 
-import com.example.latter.ui.LatteLoader;
-import com.example.latter.ui.LoaderStyle;
-
+import com.example.latter.ui.loader.LatteLoader;
+import com.example.latter.ui.loader.LoaderStyle;
 
 import retrofit2.Call;
 import retrofit2.Callback;

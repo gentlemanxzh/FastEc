@@ -24,12 +24,12 @@ public class ExampleDelegate extends LatteDelegate {
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
         RestClient.builder()
-                .url("https://www.baidu.com/")
+                .url("http://127.0.0.1/index")
                 .loader(getContext())
                 .onSuccess(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
-                        Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
                     }
                 })
                 .onFailure(new IFailure() {

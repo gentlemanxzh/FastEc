@@ -1,4 +1,4 @@
-package com.example.latter.util;
+package com.example.latter.util.dimen;
 
 import android.content.res.Resources;
 import android.util.DisplayMetrics;

@@ -6,9 +6,8 @@ import com.example.latter.net.callback.IError;
 import com.example.latter.net.callback.IFailure;
 import com.example.latter.net.callback.IRequest;
 import com.example.latter.net.callback.ISuccess;
-import com.example.latter.ui.LatteLoader;
-import com.example.latter.ui.LoaderCreator;
-import com.example.latter.ui.LoaderStyle;
+import com.example.latter.ui.loader.LoaderStyle;
+
 
 import java.io.File;
 import java.util.Map;
@@ -35,6 +34,9 @@ public class RestClientBuilder {
     private Context mContext = null;
     private LoaderStyle mLoaderStyle = null;
     private File mFile = null;
+    private String mDownloadDir = null;
+    private String mExtension = null;
+    private String mName = null;
 
     RestClientBuilder() {
 
@@ -104,6 +106,17 @@ public class RestClientBuilder {
         return this;
     }
 
+    public final RestClientBuilder dir(String dir) {
+        this.mDownloadDir = dir;
+        return this;
+    }
+
+    public final RestClientBuilder extension(String extension) {
+        this.mExtension = extension;
+        return this;
+    }
+
+
     public final RestClientBuilder loader(Context context) {
         mContext = context;
         mLoaderStyle = LoaderStyle.BallClipRotateMultipleIndicator;
@@ -111,7 +124,7 @@ public class RestClientBuilder {
     }
 
     public final RestClient build() {
-        return new RestClient(mUrl, PARAMS, mIRequest, mISuccess, mIFailure, mIError, mBody,mFile, mLoaderStyle, mContext);
+        return new RestClient(mUrl, PARAMS, mIRequest,mDownloadDir,mExtension,mName, mISuccess, mIFailure, mIError, mBody,mFile, mLoaderStyle, mContext);
     }
 
 
