@@ -77,5 +77,8 @@ dependencies {
     //Json框架
     compile 'com.alibaba:fastjson:1.2.47'
 
+    //Log
+    compile 'com.orhanobut:logger:2.1.1'
+
     implementation project(':latte-annotations')
 }

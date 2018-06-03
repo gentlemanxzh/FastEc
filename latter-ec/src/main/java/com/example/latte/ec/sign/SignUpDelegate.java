@@ -12,9 +12,15 @@ import com.example.latte.ec.R2;
 import com.example.latter.delegates.LatteDelegate;
 import com.example.latter.net.RestClient;
 import com.example.latter.net.rx.RxRestClient;
+import com.example.latter.util.log.LatteLogger;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author gentleman
@@ -43,11 +49,39 @@ public class SignUpDelegate extends LatteDelegate{
     void onClickSignUp(){
         if (checkForm()){
             RxRestClient.builder()
-                    .url("sign_up")
+                    .url("http://127.0.0.1:8080/RestServer/data/user_profile.json")
                     .params("","")
                     .build()
-                    .post();
+                    .get()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<String>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(String s) {
+                            LatteLogger.json("TAG",s);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            LatteLogger.e("TAG",e.toString());
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
         }
+    }
+
+    @OnClick(R2.id.tv_link_sign_in)
+    void onClickLink(){
+        start(new SignInDelegate());
     }
 
 

@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 
 import com.example.latte.ec.launcher.LauncherDelegate;
 import com.example.latte.ec.launcher.LauncherScrollDelegate;
+import com.example.latte.ec.sign.SignInDelegate;
 import com.example.latte.ec.sign.SignUpDelegate;
 import com.example.latter.activity.ProxyActivity;
 import com.example.latter.app.Latte;
