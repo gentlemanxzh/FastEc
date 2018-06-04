@@ -7,6 +7,8 @@ import android.view.View;
 
 import com.example.latte.ec.R;
 import com.example.latte.ec.R2;
+import com.example.latter.app.AccountManager;
+import com.example.latter.app.IUserChecker;
 import com.example.latter.delegates.LatteDelegate;
 import com.example.latter.ui.launcher.ScrollLauncherTag;
 import com.example.latter.util.storage.LatterPreference;
@@ -65,6 +67,17 @@ public class LauncherDelegate extends LatteDelegate implements ITimeListener {
             start(new LauncherScrollDelegate(),SINGLETASK);
         }else {
             //用户是否登录了APP
+            AccountManager.checkAccount(new IUserChecker() {
+                @Override
+                public void onSign() {
+                    
+                }
+
+                @Override
+                public void onNotSignIn() {
+
+                }
+            });
         }
     }
 
