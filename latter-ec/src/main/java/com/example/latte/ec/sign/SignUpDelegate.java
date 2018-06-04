@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.PatternMatcher;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 
@@ -13,6 +14,7 @@ import com.example.latter.delegates.LatteDelegate;
 import com.example.latter.net.RestClient;
 import com.example.latter.net.rx.RxRestClient;
 import com.example.latter.util.log.LatteLogger;
+import com.orhanobut.logger.Logger;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -49,8 +51,11 @@ public class SignUpDelegate extends LatteDelegate{
     void onClickSignUp(){
         if (checkForm()){
             RxRestClient.builder()
-                    .url("http://127.0.0.1:8080/RestServer/data/user_profile.json")
-                    .params("","")
+                    .url("http://oxjde2kpq.bkt.clouddn.com/user_profile.json")
+                    .params("name",mName.getText().toString())
+                    .params("email",mEmail.getText().toString())
+                    .params("phone",mPhone.getText().toString())
+                    .params("password",mPassword.getText().toString())
                     .build()
                     .get()
                     .subscribeOn(Schedulers.io())
@@ -63,7 +68,8 @@ public class SignUpDelegate extends LatteDelegate{
 
                         @Override
                         public void onNext(String s) {
-                            LatteLogger.json("TAG",s);
+                            LatteLogger.d("TAG",s);
+                            SignHandle.onSignUp(s);
                         }
 
                         @Override

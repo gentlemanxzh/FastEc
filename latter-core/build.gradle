@@ -78,7 +78,11 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.47'
 
     //Log
-    compile 'com.orhanobut:logger:2.1.1'
+    compile 'com.orhanobut:logger:2.2.0'
+
+    //数据库
+    compile 'org.greenrobot:greendao-generator:3.2.2'
+    compile 'org.greenrobot:greendao:3.2.2'
 
     implementation project(':latte-annotations')
 }
