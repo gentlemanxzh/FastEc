@@ -1,5 +1,6 @@
 package com.example.latte.ec.launcher;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
@@ -10,6 +11,8 @@ import com.example.latte.ec.R2;
 import com.example.latter.app.AccountManager;
 import com.example.latter.app.IUserChecker;
 import com.example.latter.delegates.LatteDelegate;
+import com.example.latter.ui.launcher.ILauncherListener;
+import com.example.latter.ui.launcher.OnLauncherFinishTag;
 import com.example.latter.ui.launcher.ScrollLauncherTag;
 import com.example.latter.util.storage.LatterPreference;
 import com.example.latter.util.time.BaseTimerTask;
@@ -35,6 +38,8 @@ public class LauncherDelegate extends LatteDelegate implements ITimeListener {
     private Timer mTimer = null;
     private int mCount = 5;
 
+    private ILauncherListener mILauncherListener = null;
+
     @OnClick
     void onClickTimerView(){
         if (mTimer!=null){
@@ -49,6 +54,14 @@ public class LauncherDelegate extends LatteDelegate implements ITimeListener {
         final BaseTimerTask task = new BaseTimerTask(this);
         mTimer.schedule(task,0,1000);
 
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ILauncherListener){
+            mILauncherListener = (ILauncherListener) activity;
+        }
     }
 
     @Override
@@ -70,12 +83,16 @@ public class LauncherDelegate extends LatteDelegate implements ITimeListener {
             AccountManager.checkAccount(new IUserChecker() {
                 @Override
                 public void onSign() {
-                    
+                    if (mILauncherListener!=null) {
+                        mILauncherListener.onLauncherFinish(OnLauncherFinishTag.SIGNED);
+                    }
                 }
 
                 @Override
                 public void onNotSignIn() {
-
+                    if (mILauncherListener!=null) {
+                        mILauncherListener.onLauncherFinish(OnLauncherFinishTag.NOT_SIGNED);
+                    }
                 }
             });
         }
