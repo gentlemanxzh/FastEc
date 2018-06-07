@@ -15,5 +15,8 @@ public enum ConfigType {
     APPLICATION_CONTEXT,
     CONFIG_READY,
     ICON,
-    INTERCEPTOR
+    INTERCEPTOR,
+    WE_CHAT_APP_ID,
+    WE_CHAT_APP_SECRET,
+    ACTIVITY
 }

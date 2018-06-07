@@ -24,6 +24,14 @@ public final class Latte {
         return Configurator.getInstance().getLatteConfigs();
     }
 
+    public static Configurator getConfigurator() {
+        return Configurator.getInstance();
+    }
+
+    public static <T> T getConfiguration(Object key) {
+        return getConfigurator().getConfiguration(key);
+    }
+
     /**
      * 获取配置信息中的getApplicationContext
      */

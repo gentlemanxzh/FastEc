@@ -1,5 +1,7 @@
 package com.example.latter.app;
 
+import android.app.Activity;
+
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
 
@@ -59,6 +61,26 @@ public class Configurator {
         return this;
     }
 
+
+
+    public final Configurator withWeChatAppId(String appId) {
+        LATTE_CONFIGS.put(ConfigType.WE_CHAT_APP_ID, appId);
+        return this;
+    }
+
+    public final Configurator withWeChatAppSecret(String appSecret) {
+        LATTE_CONFIGS.put(ConfigType.WE_CHAT_APP_SECRET, appSecret);
+        return this;
+    }
+
+    /**
+     * 微信回调需要一个Activity
+     */
+    public final Configurator withActivity(Activity activity) {
+        LATTE_CONFIGS.put(ConfigType.ACTIVITY, activity);
+        return this;
+    }
+
     /**
      * 检出是否配置完成
      */
@@ -105,7 +127,7 @@ public class Configurator {
      * 获取配置信息
      */
     @SuppressWarnings("unchecked")
-    final <T> T getConfiguration(Enum<ConfigType> key) {
+    final <T> T getConfiguration(Object key) {
         checkConfiguration();
         return (T) LATTE_CONFIGS.get(key);
     }
