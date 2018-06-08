@@ -95,7 +95,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
 
         //添加内容Fragment
         final SupportFragment[] delegateArray = ITEM_DELEGATES.toArray(new SupportFragment[size]);
-        loadMultipleRootFragment(R.id.delegate_container,mIndexDelegate,delegateArray);
+        loadMultipleRootFragment(R.id.bottom_bar_delegate_container,mIndexDelegate,delegateArray);
     }
 
     private void resetColor(){
