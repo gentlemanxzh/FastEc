@@ -88,5 +88,8 @@ dependencies {
     //noinspection GradleDynamicVersion
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 
+    //RecyclerView依赖
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+
     implementation project(':latte-annotations')
 }
