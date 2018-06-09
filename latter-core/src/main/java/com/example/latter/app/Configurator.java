@@ -1,6 +1,7 @@
 package com.example.latter.app;
 
 import android.app.Activity;
+import android.os.Handler;
 
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
@@ -24,10 +25,12 @@ public class Configurator {
     //存放图标信息的集合
     private static final ArrayList<IconFontDescriptor> ICONS = new ArrayList<>();
     private static final ArrayList<Interceptor> INTERCEPTORS = new ArrayList<>();
+    private static final Handler HANDLER = new Handler();
 
 
     private Configurator() {
         LATTE_CONFIGS.put(ConfigType.CONFIG_READY, false);
+        LATTE_CONFIGS.put(ConfigType.HANDLER,HANDLER);
     }
 
     /**
