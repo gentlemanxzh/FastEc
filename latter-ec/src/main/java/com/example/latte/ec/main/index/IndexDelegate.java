@@ -7,14 +7,24 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.latte.ec.R;
 import com.example.latte.ec.R2;
 import com.example.latter.delegates.bottom.BottomItemDelegate;
+import com.example.latter.net.rx.RxRestClient;
+import com.example.latter.ui.recycler.MultipleFields;
+import com.example.latter.ui.recycler.MultipleItemEntity;
 import com.example.latter.ui.refresh.RefreshHandler;
 import com.joanzapata.iconify.widget.IconTextView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author gentleman
@@ -39,15 +49,14 @@ public class IndexDelegate extends BottomItemDelegate {
     private RefreshHandler mRefreshHandler = null;
 
 
-
-    private void initRefreshLayout(){
+    private void initRefreshLayout() {
         mRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_blue_bright,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light
         );
 
-        mRefreshLayout.setProgressViewOffset(true,120,300);
+        mRefreshLayout.setProgressViewOffset(true, 120, 300);
     }
 
     /**
@@ -67,5 +76,38 @@ public class IndexDelegate extends BottomItemDelegate {
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
         mRefreshHandler = new RefreshHandler(mRefreshLayout);
+
+        RxRestClient.builder()
+                .url("http://oxjde2kpq.bkt.clouddn.com/index_data.json")
+                .build()
+                .get()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        IndexDataConverter converter = new IndexDataConverter();
+                        converter.setJsonData(s);
+                        ArrayList<MultipleItemEntity> itemEntities = converter.convert();
+                       String url = itemEntities.get(1).getField(MultipleFields.IMAGE_URL);
+                        Toast.makeText(getContext(), url, Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

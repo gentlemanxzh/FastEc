@@ -1,12 +1,11 @@
 package com.example.latter.ui.recycler;
 
-import com.chad.library.adapter.base.entity.MultiItemEntity;
-
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 
 /**
  * Created by Gentleman on 2018/6/9.
+ * 建造者模式用于Item实体类参数初始化
  */
 
 public class MultipleEntityBuilder {
@@ -35,7 +34,7 @@ public class MultipleEntityBuilder {
         return this;
     }
 
-    public MultiItemEntity build(){
+    public MultipleItemEntity build(){
        return new MultipleItemEntity(FIELDS);
     }
 

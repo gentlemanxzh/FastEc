@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 
 /**
  * Created by Gentleman on 2018/6/9.
+ * 参数实体类，每一个参数就是一个实体类
  */
 
 public class MultipleItemEntity implements MultiItemEntity {
@@ -24,6 +25,11 @@ public class MultipleItemEntity implements MultiItemEntity {
         FIELDS_REFERENCE.get().putAll(fields);
     }
 
+
+    public static MultipleEntityBuilder builder(){
+        return new MultipleEntityBuilder();
+    }
+
     /**
      * 返回Item的类型
      */
@@ -31,6 +37,8 @@ public class MultipleItemEntity implements MultiItemEntity {
     public int getItemType() {
         return (int) FIELDS_REFERENCE.get().get(MultipleFields.ITEM_TYPE);
     }
+
+
 
 
 

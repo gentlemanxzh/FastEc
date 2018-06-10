@@ -75,7 +75,7 @@ dependencies {
     compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
 
     //Json框架
-    compile 'com.alibaba:fastjson:1.2.47'
+    compile 'com.alibaba:fastjson:1.1.68.android'
 
     //Log
     compile 'com.orhanobut:logger:2.2.0'
