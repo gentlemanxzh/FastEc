@@ -58,8 +58,8 @@ public class MultipleRecyclerAdapter extends BaseMultiItemQuickAdapter<MultipleI
         //设置不同的item布局
         addItemType(ItemType.TEXT, R.layout.item_multiple_text);
         addItemType(ItemType.IMAGE, R.layout.item_multiple_image);
-        addItemType(ItemType.IMAGE, R.layout.item_multiple_image_text);
-        addItemType(ItemType.IMAGE, R.layout.item_multiple_banner);
+        addItemType(ItemType.TEXT_IMAGE, R.layout.item_multiple_image_text);
+        addItemType(ItemType.BANNER, R.layout.item_multiple_banner);
 
         //设置宽度的监听
         setSpanSizeLookup(this);
@@ -92,11 +92,11 @@ public class MultipleRecyclerAdapter extends BaseMultiItemQuickAdapter<MultipleI
             case ItemType.TEXT_IMAGE:
                 text = item.getField(MultipleFields.TEXT);
                 imageUrl = item.getField(MultipleFields.IMAGE_URL);
-                holder.setText(R.id.text_single, text);
+                holder.setText(R.id.tv_multiple, text);
                 Glide.with(mContext)
                         .load(imageUrl)
                         .apply(RECYCLER_OPTIONS)
-                        .into((ImageView) holder.getView(R.id.img_single));
+                        .into((ImageView) holder.getView(R.id.img_multiple));
                 break;
 
             case ItemType.BANNER:

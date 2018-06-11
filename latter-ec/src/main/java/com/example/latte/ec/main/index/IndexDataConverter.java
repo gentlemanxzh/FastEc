@@ -53,7 +53,7 @@ public class IndexDataConverter extends DataConverter {
                      .setField(MultipleFields.ID,id)
                      .setField(MultipleFields.TEXT,text)
                      .setField(MultipleFields.IMAGE_URL,imageUrl)
-                     .setField(MultipleFields.BANNERS,banners)
+                     .setField(MultipleFields.BANNERS,bannerImages)
                      .build();
 
              ENTITIES.add(entity);
