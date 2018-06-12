@@ -23,7 +23,7 @@ public class ExampleApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Logger.addLogAdapter(new AndroidLogAdapter());
+
 
         Latte.init(this)
                 .withApiHost("http://127.0.0.1/")
