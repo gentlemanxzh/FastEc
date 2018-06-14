@@ -22,9 +22,9 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb_index"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/header_height"
         app:layout_behavior="com.example.latte.ec.main.index.TranslucentBehavior"
-        android:background="@android:color/transparent">
+        android:background="@color/app_main">
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
