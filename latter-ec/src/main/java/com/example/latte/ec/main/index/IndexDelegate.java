@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.latte.ec.R;
 import com.example.latte.ec.R2;
+import com.example.latte.ec.main.EcBottomDelegate;
 import com.example.latter.delegates.bottom.BottomItemDelegate;
 import com.example.latter.net.rx.RxRestClient;
 import com.example.latter.ui.recycler.BaseDecoration;
@@ -67,7 +68,8 @@ public class IndexDelegate extends BottomItemDelegate {
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.addItemDecoration(
                 BaseDecoration.create(ContextCompat.getColor(getContext(),R.color.app_background),5));
-
+        final EcBottomDelegate ecBottomDelegate = getParentDelegate();
+        mRecyclerView.addOnItemTouchListener(IndexItemClickListener.create(ecBottomDelegate));
     }
 
 
@@ -90,8 +92,6 @@ public class IndexDelegate extends BottomItemDelegate {
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
         mRefreshHandler = RefreshHandler.create(mRefreshLayout,mRecyclerView,new IndexDataConverter());
-
-
     }
 
     @Override
