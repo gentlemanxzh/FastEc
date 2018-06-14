@@ -68,6 +68,7 @@ public class IndexDelegate extends BottomItemDelegate {
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.addItemDecoration(
                 BaseDecoration.create(ContextCompat.getColor(getContext(),R.color.app_background),5));
+        //获取父布局实例
         final EcBottomDelegate ecBottomDelegate = getParentDelegate();
         mRecyclerView.addOnItemTouchListener(IndexItemClickListener.create(ecBottomDelegate));
     }
@@ -97,6 +98,6 @@ public class IndexDelegate extends BottomItemDelegate {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       mToolbar.getBackground().setAlpha(0);
+       mToolbar.getBackground().mutate().setAlpha(0);
     }
 }
