@@ -2,7 +2,9 @@ package com.example.latter.net;
 
 import com.example.latter.app.ConfigType;
 import com.example.latter.app.Latte;
+import com.example.latter.delegates.LatteDelegate;
 import com.example.latter.net.rx.RxRestService;
+import com.example.latter.util.log.LatteLogger;
 
 import java.util.ArrayList;
 import java.util.WeakHashMap;
@@ -10,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -57,6 +60,13 @@ public class RestCreator {
                     BUILDER.addInterceptor(interceptor);
                 }
             }
+            BUILDER.addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                @Override
+                public void log(String message) {
+                    LatteLogger.d(message);
+                }
+            }).setLevel(HttpLoggingInterceptor.Level.BASIC));
+
             return BUILDER;
         }
 

@@ -20,7 +20,7 @@ import okhttp3.RequestBody;
 
 public class RxRestClientBuilder {
 
-    private static final Map<String, Object> PARAMS = RestCreator.getParams();
+    private final WeakHashMap<String, Object> PARAMS = RestCreator.getParams();
     private String mUrl = null;
     private RequestBody mBody = null;
     private Context mContext = null;

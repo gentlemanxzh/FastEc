@@ -61,6 +61,7 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,Base
         BEAN.setDelayed(1000);
         RxRestClient.builder()
                 .url(url)
+                .params("name","aaaaaa")
                 .build()
                 .get()
                 .subscribeOn(Schedulers.io())
@@ -73,14 +74,51 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,Base
 
                     @Override
                     public void onNext(String response) {
-                        final JSONObject object = JSON.parseObject(response);
-                        BEAN.setTotal(object.getInteger("total"))
-                                .setPageSize(object.getInteger("page_size"));
-                                //设置Adapter
-                        mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(response));
-                        mAdapter.setOnLoadMoreListener(RefreshHandler.this,RECYCLERVIEW);
-                        RECYCLERVIEW.setAdapter(mAdapter);
-                        BEAN.addIndex();
+//                        final JSONObject object = JSON.parseObject(response);
+//                        BEAN.setTotal(object.getInteger("total"))
+//                                .setPageSize(object.getInteger("page_size"));
+//                                //设置Adapter
+//                        mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(response));
+//                        mAdapter.setOnLoadMoreListener(RefreshHandler.this,RECYCLERVIEW);
+//                        RECYCLERVIEW.setAdapter(mAdapter);
+//                        BEAN.addIndex();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        RxRestClient.builder()
+                .url(url)
+                .params("name","bbbbbb")
+                .build()
+                .get()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String response) {
+//                        final JSONObject object = JSON.parseObject(response);
+//                        BEAN.setTotal(object.getInteger("total"))
+//                                .setPageSize(object.getInteger("page_size"));
+//                        //设置Adapter
+//                        mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(response));
+//                        mAdapter.setOnLoadMoreListener(RefreshHandler.this,RECYCLERVIEW);
+//                        RECYCLERVIEW.setAdapter(mAdapter);
+//                        BEAN.addIndex();
 
                     }
 

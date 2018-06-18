@@ -9,6 +9,7 @@ import com.example.latter.ui.loader.LoaderStyle;
 
 import java.io.File;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import io.reactivex.Observable;
 import okhttp3.MediaType;
@@ -25,20 +26,20 @@ import okhttp3.ResponseBody;
 public class RxRestClient {
 
     private final String URL;
-    private static final Map<String, Object> PARAMS = RestCreator.getParams();
+    private final WeakHashMap<String, Object> PARAMS;
     private final RequestBody BODY;
     private final LoaderStyle LOADER_STYLE;
     private final Context CONTEXT;
     private final File FILE;
 
     public RxRestClient(String URL,
-                        Map<String, Object> params,
+                        WeakHashMap<String, Object> params,
                         RequestBody body,
                         File file,
                         LoaderStyle loaderStyle,
                         Context context) {
         this.URL = URL;
-        params.putAll(params);
+        PARAMS = params;
         this.BODY = body;
         this.FILE = file;
         this.LOADER_STYLE = loaderStyle;

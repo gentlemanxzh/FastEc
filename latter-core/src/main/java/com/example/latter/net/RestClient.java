@@ -13,6 +13,7 @@ import com.example.latter.ui.loader.LoaderStyle;
 
 import java.io.File;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -31,7 +32,7 @@ import retrofit2.http.Url;
 public class RestClient {
 
     private final String URL;
-    private static final Map<String, Object> PARAMS = RestCreator.getParams();
+    private final WeakHashMap<String, Object> PARAMS;
     private final IRequest REQUEST;
     private final String DOWNLOAD_DIR;
     private final String EXTENSION;
@@ -45,7 +46,7 @@ public class RestClient {
     private final File FILE;
 
     public RestClient(String URL,
-                      Map<String, Object> params,
+                      WeakHashMap<String, Object> params,
                       IRequest request,
                       String downloadDir,
                       String extension,
@@ -58,7 +59,7 @@ public class RestClient {
                       LoaderStyle loaderStyle,
                       Context context) {
         this.URL = URL;
-        params.putAll(params);
+        PARAMS = params;
         this.REQUEST = request;
         this.DOWNLOAD_DIR = downloadDir;
         this.EXTENSION = extension;

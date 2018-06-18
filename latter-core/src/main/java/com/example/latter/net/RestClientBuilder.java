@@ -24,7 +24,7 @@ import okhttp3.RequestBody;
 
 public class RestClientBuilder {
 
-    private static final Map<String, Object> PARAMS = RestCreator.getParams();
+    private static final WeakHashMap<String, Object> PARAMS = new WeakHashMap<>();
     private String mUrl = null;
     private IRequest mIRequest = null;
     private ISuccess mISuccess = null;
