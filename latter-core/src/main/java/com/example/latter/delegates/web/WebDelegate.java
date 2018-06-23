@@ -34,7 +34,7 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewIniti
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mUrl = args.getString(RouteKeys.URL.name());
-
+        initWebView();
     }
 
     @SuppressLint("JavascriptInterface")

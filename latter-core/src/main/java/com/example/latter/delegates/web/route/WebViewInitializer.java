@@ -33,6 +33,18 @@ public class WebViewInitializer {
         //隐藏缩放控件
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
+        //禁止缩放
+        settings.setSupportZoom(false);
+        //文件权限
+        settings.setAllowFileAccess(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
+        settings.setAllowContentAccess(true);
+        //缓存相关
+        settings.setAppCacheEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
 
         return webView;
