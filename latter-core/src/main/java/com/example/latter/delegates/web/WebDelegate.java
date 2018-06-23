@@ -16,7 +16,7 @@ import java.lang.ref.WeakReference;
  * Created by Gentleman on 2018/6/23.
  */
 
-public abstract class WebDelegate extends LatteDelegate {
+public abstract class WebDelegate extends LatteDelegate implements IWebViewInitializer {
 
     private WebView mWebView = null;
     private final ReferenceQueue<WebView> WEB_VIEW_QUEUE = new ReferenceQueue<>();
@@ -38,30 +38,45 @@ public abstract class WebDelegate extends LatteDelegate {
     }
 
     @SuppressLint("JavascriptInterface")
-    private void initWebView(){
-        if (mWebView!=null){
+    private void initWebView() {
+        if (mWebView != null) {
             mWebView.removeAllViews();
             mWebView.destroy();
-        }else {
+        } else {
             final IWebViewInitializer initializer = setInitializer();
-            if (initializer!=null){
-                final WeakReference<WebView> webViewWeakReference = new WeakReference<>(new WebView(getContext()),WEB_VIEW_QUEUE);
+            if (initializer != null) {
+                final WeakReference<WebView> webViewWeakReference = new WeakReference<>(new WebView(getContext()), WEB_VIEW_QUEUE);
                 mWebView = webViewWeakReference.get();
                 mWebView = initializer.initWebView(mWebView);
                 mWebView.setWebChromeClient(initializer.initWebChromeClient());
                 mWebView.setWebViewClient(initializer.initWebViewClient());
-                mWebView.addJavascriptInterface(LatteWebInterface.create(this),"");
+                mWebView.addJavascriptInterface(LatteWebInterface.create(this), "");
                 mIsWebViewAvailable = true;
-            }else {
+            } else {
                 throw new NullPointerException("Initializer is null");
             }
         }
     }
 
+    public WebView getWebView() {
+        if (mWebView == null) {
+            throw new NullPointerException("WebView is null");
+        }
+        return mIsWebViewAvailable ? mWebView : null;
+    }
+
+    public String getUrl(){
+        if (mUrl==null){
+            throw new NullPointerException("URL is null");
+        }
+
+        return mUrl;
+    }
+
     @Override
     public void onPause() {
         super.onPause();
-        if (mWebView!=null){
+        if (mWebView != null) {
             mWebView.onPause();
         }
     }
@@ -69,7 +84,7 @@ public abstract class WebDelegate extends LatteDelegate {
     @Override
     public void onResume() {
         super.onResume();
-        if (mWebView!=null){
+        if (mWebView != null) {
             mWebView.onResume();
         }
     }
@@ -83,7 +98,7 @@ public abstract class WebDelegate extends LatteDelegate {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mWebView!=null){
+        if (mWebView != null) {
             mWebView.removeAllViews();
             mWebView.destroy();
             mWebView = null;
