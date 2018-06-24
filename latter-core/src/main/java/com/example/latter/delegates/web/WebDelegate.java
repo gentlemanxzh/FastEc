@@ -22,6 +22,7 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewIniti
     private final ReferenceQueue<WebView> WEB_VIEW_QUEUE = new ReferenceQueue<>();
     private String mUrl = null;
     private boolean mIsWebViewAvailable = false;
+    private LatteDelegate mTopDelegate = null;
 
     public WebDelegate() {
 
@@ -50,12 +51,23 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewIniti
                 mWebView = initializer.initWebView(mWebView);
                 mWebView.setWebChromeClient(initializer.initWebChromeClient());
                 mWebView.setWebViewClient(initializer.initWebViewClient());
-                mWebView.addJavascriptInterface(LatteWebInterface.create(this), "");
+                mWebView.addJavascriptInterface(LatteWebInterface.create(this), "latte");
                 mIsWebViewAvailable = true;
             } else {
                 throw new NullPointerException("Initializer is null");
             }
         }
+    }
+
+    public void setTopDelegate(LatteDelegate delegate){
+        mTopDelegate = delegate;
+    }
+
+    public LatteDelegate getTopDelegate(){
+        if (mTopDelegate==null){
+            mTopDelegate = this;
+        }
+        return mTopDelegate;
     }
 
     public WebView getWebView() {

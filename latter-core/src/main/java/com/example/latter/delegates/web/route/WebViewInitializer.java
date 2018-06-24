@@ -28,6 +28,7 @@ public class WebViewInitializer {
         });
         //初始化WebSetting
         final WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
         final String ua = settings.getUserAgentString();
         settings.setUserAgentString(ua+"Latte");
         //隐藏缩放控件
