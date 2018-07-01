@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebView;
 
+import com.example.latter.app.ConfigType;
+import com.example.latter.app.Latte;
 import com.example.latter.delegates.LatteDelegate;
 import com.example.latter.delegates.web.route.RouteKeys;
 
@@ -14,13 +16,16 @@ import java.lang.ref.WeakReference;
 
 /**
  * Created by Gentleman on 2018/6/23.
+ * @function 发现页面的WebFragment
  */
 
 public abstract class WebDelegate extends LatteDelegate implements IWebViewInitializer {
 
     private WebView mWebView = null;
+    //引用队列
     private final ReferenceQueue<WebView> WEB_VIEW_QUEUE = new ReferenceQueue<>();
     private String mUrl = null;
+    //WebView初始化变量
     private boolean mIsWebViewAvailable = false;
     private LatteDelegate mTopDelegate = null;
 
@@ -28,30 +33,43 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewIniti
 
     }
 
+    /**
+     * 进行WebView的初始化
+     */
     public abstract IWebViewInitializer setInitializer();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //获取传进来的URL
         Bundle args = getArguments();
         mUrl = args.getString(RouteKeys.URL.name());
         initWebView();
     }
 
+    /**
+     * 初始化WebView
+     */
     @SuppressLint("JavascriptInterface")
     private void initWebView() {
+
         if (mWebView != null) {
+            //如果WebView不为null的话就清除所有的View
             mWebView.removeAllViews();
             mWebView.destroy();
         } else {
             final IWebViewInitializer initializer = setInitializer();
             if (initializer != null) {
+                //弱引用
                 final WeakReference<WebView> webViewWeakReference = new WeakReference<>(new WebView(getContext()), WEB_VIEW_QUEUE);
                 mWebView = webViewWeakReference.get();
                 mWebView = initializer.initWebView(mWebView);
                 mWebView.setWebChromeClient(initializer.initWebChromeClient());
                 mWebView.setWebViewClient(initializer.initWebViewClient());
-                mWebView.addJavascriptInterface(LatteWebInterface.create(this), "latte");
+                //webView与JavaScript进行交互
+                final String name = (String) Latte.getConfiguration(ConfigType.JAVASCRIPT_INTERFACE);
+                mWebView.addJavascriptInterface(LatteWebInterface.create(this), name);
+                //Web已经初始化完成
                 mIsWebViewAvailable = true;
             } else {
                 throw new NullPointerException("Initializer is null");

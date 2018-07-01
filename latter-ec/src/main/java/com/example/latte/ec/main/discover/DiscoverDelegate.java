@@ -11,6 +11,7 @@ import com.example.latter.delegates.web.WebDelegateImpl;
 
 /**
  * Created by Gentleman on 2018/6/23.
+ * @function 发现Fragment
  */
 
 public class DiscoverDelegate extends BottomItemDelegate {

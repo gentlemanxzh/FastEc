@@ -24,12 +24,18 @@ public class EventManager {
         return Holder.INSTANCE;
     }
 
+    /**
+     * 添加事件
+     */
     public EventManager addEvent(@NonNull String name,@NonNull Event event){
         EVENTS.put(name,event);
         return this;
     }
 
 
+    /**
+     * 创建事件
+     */
     public Event createEvent(@NonNull String action){
         Event event = EVENTS.get(action);
         if (event==null){

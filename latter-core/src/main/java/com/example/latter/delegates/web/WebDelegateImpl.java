@@ -15,10 +15,16 @@ import com.example.latter.delegates.web.route.WebViewInitializer;
 
 /**
  * Created by Gentleman on 2018/6/23.
+ * @function WebView的具体实现
  */
 
 public class WebDelegateImpl extends WebDelegate {
+    private IPageLoadListener mIPageLoadListener = null;
 
+    /**
+     * 工厂方法创建WebView
+     * @param url URL地址
+     */
     public static WebDelegateImpl create(String url){
         final Bundle args = new Bundle();
         args.putString(RouteKeys.URL.name(),url);
@@ -27,11 +33,21 @@ public class WebDelegateImpl extends WebDelegate {
         return delegate;
     }
 
+    public void setPageLoadListener(IPageLoadListener listener){
+        this.mIPageLoadListener = listener;
+    }
 
+
+    /**
+     * 获取WebView
+     */
     @Override
     public Object setLayout() {
+        //相当于直接在setContentView中直接传入一个WebView
         return getWebView();
     }
+
+
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
@@ -56,6 +72,7 @@ public class WebDelegateImpl extends WebDelegate {
     @Override
     public WebViewClient initWebViewClient() {
         final WebViewClientImpl client = new WebViewClientImpl(this);
+        client.setPageLoadListener(mIPageLoadListener);
         return client;
     }
 

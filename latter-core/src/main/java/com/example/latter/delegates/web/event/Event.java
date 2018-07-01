@@ -20,7 +20,7 @@ public abstract class Event implements IEvent {
 
     public WebView getWebView(){
         return mDelegate.getWebView();
-        
+
     }
 
     public Context getContext() {
@@ -39,11 +39,11 @@ public abstract class Event implements IEvent {
         this.mAction = mAction;
     }
 
-    public LatteDelegate getDelegate() {
+    public WebDelegate getDelegate() {
         return mDelegate;
     }
 
-    public void setDelegate(LatteDelegate mDelegate) {
+    public void setDelegate(WebDelegate mDelegate) {
         this.mDelegate = mDelegate;
     }
 

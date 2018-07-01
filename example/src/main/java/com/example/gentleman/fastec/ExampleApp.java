@@ -4,13 +4,11 @@ import android.app.Application;
 
 import com.example.latte.ec.database.DatabaseManager;
 import com.example.latte.ec.icon.FontEcModule;
-import com.example.latter.app.ConfigType;
 import com.example.latter.app.Latte;
-import com.example.latter.net.interceptors.DebugInterceptor;
+import com.example.gentleman.fastec.event.TestEvent;
+import com.example.latter.net.rx.AddCookieInterceptor;
 import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
 
 /**
  * @author gentleman
@@ -30,6 +28,11 @@ public class ExampleApp extends Application {
                 .withIcon(new FontAwesomeModule())
                 .withWeChatAppId("")
                 .withWeChatAppSecret("")
+                .withJavaScriptInterface("latte")
+                .withWebEvent("test",new TestEvent())
+                //添加cookie同步拦截器
+                .withInterceptor(new AddCookieInterceptor())
+                .withWebHost("https://www.baidu.com/")
                 .withIcon(new FontEcModule())
 //                .withInterceptor(new DebugInterceptor("index",R.raw.test))
                 .configure();

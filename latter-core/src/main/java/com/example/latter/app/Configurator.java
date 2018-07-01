@@ -2,7 +2,11 @@ package com.example.latter.app;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 
+import com.example.latter.delegates.web.event.Event;
+import com.example.latter.delegates.web.event.EventManager;
+import com.example.latter.ui.recycler.ItemType;
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -79,6 +83,17 @@ public class Configurator {
         return this;
     }
 
+    public final Configurator withJavaScriptInterface(@NonNull String name){
+        LATTE_CONFIGS.put(ConfigType.JAVASCRIPT_INTERFACE,name);
+        return this;
+    }
+
+    public final Configurator withWebEvent(@NonNull String name, @NonNull Event event){
+       final EventManager manager = EventManager.getInstance();
+       manager.addEvent(name,event);
+        return this;
+    }
+
     /**
      * 微信回调需要一个Activity
      */
@@ -112,6 +127,11 @@ public class Configurator {
     public final Configurator withIcon(IconFontDescriptor descriptor){
         ICONS.add(descriptor);
 
+        return this;
+    }
+
+    public final Configurator withWebHost(String host){
+        LATTE_CONFIGS.put(ConfigType.WEB_HOST,host);
         return this;
     }
 

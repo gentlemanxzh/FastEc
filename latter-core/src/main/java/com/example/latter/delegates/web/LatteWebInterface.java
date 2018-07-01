@@ -23,6 +23,10 @@ public final class LatteWebInterface {
     }
 
 
+    /**
+     * Android4.4之后需要加入JavascriptInterface
+     * 不然无法获取事件
+     */
     @JavascriptInterface
     public String event(String params){
         final String action = JSON.parseObject(params).getString("action");
