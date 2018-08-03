@@ -13,5 +13,5 @@ public enum MultipleFields {
     SPAN_SIZE,
     ID,
     NAME,
-    TAG
+    TAG//初始化的时候的点击状态
 }
