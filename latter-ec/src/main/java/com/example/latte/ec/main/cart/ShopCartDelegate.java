@@ -1,12 +1,16 @@
 package com.example.latte.ec.main.cart;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ViewStubCompat;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.latte.ec.R;
 import com.example.latte.ec.R2;
@@ -30,7 +34,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Gentleman on 2018/7/8.
  */
 
-public class ShopCartDelegate extends BottomItemDelegate {
+public class ShopCartDelegate extends BottomItemDelegate implements ICartItemListener {
 
     private ShopCartAdapter mAdapter;
     private int mCurrentCount;//需要删除的Item数量
@@ -40,6 +44,10 @@ public class ShopCartDelegate extends BottomItemDelegate {
     RecyclerView mRecyclerView;
     @BindView(R2.id.icon_shop_cart_select_all)
     IconTextView mIconSelectAll = null;
+    @BindView(R2.id.stub_no_item)
+    ViewStubCompat mStubNoItem = null;
+    @BindView(R2.id.tv_shop_cart_total_price)
+    AppCompatTextView mTotalPrice = null;
 
     @OnClick(R2.id.icon_shop_cart_select_all)
     void onClickSelectAll() {
@@ -79,12 +87,31 @@ public class ShopCartDelegate extends BottomItemDelegate {
             mAdapter.remove(removePosition);
 
         }
+        checkItemCount();
     }
 
     @OnClick(R2.id.tv_top_shop_cart_clear)
     void onClickClear() {
         mAdapter.getData().clear();
         mAdapter.notifyDataSetChanged();
+        checkItemCount();
+    }
+    @SuppressLint("RestrictedApi")
+    private void checkItemCount(){
+        final int count = mAdapter.getItemCount();
+        if (count==0){
+             final View stubView = mStubNoItem.inflate();
+             final AppCompatTextView tvToBuy = stubView.findViewById(R.id.tv_stub_to_buy);
+             tvToBuy.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View view) {
+                     Toast.makeText(getContext(), "你该购物啦！", Toast.LENGTH_SHORT).show();
+                 }
+             });
+             mRecyclerView.setVisibility(View.GONE);
+        }else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -120,9 +147,10 @@ public class ShopCartDelegate extends BottomItemDelegate {
                         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
                         mRecyclerView.setLayoutManager(manager);
                         mAdapter = new ShopCartAdapter(dataList);
+                        mAdapter.setCartItemListener(ShopCartDelegate.this);
                         mRecyclerView.setAdapter(mAdapter);
 
-
+                        checkItemCount();
                     }
 
                     @Override
@@ -135,5 +163,12 @@ public class ShopCartDelegate extends BottomItemDelegate {
 
                     }
                 });
+    }
+
+    @Override
+    public void onItemClick(double itemTotalPrice) {
+        final double price = mAdapter.getTotalPrice();
+        mTotalPrice.setText(String.valueOf(price));
+
     }
 }

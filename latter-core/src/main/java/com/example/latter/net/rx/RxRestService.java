@@ -31,7 +31,6 @@ public interface RxRestService {
     @GET
     Observable<String> get(@Url String url, @QueryMap Map<String, Object> params);
 
-    @FormUrlEncoded
     @POST
     Observable<String> post(@Url String url, @QueryMap Map<String, Object> params);
 
