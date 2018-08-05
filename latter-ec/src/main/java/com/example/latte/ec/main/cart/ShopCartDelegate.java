@@ -39,6 +39,7 @@ public class ShopCartDelegate extends BottomItemDelegate implements ICartItemLis
     private ShopCartAdapter mAdapter;
     private int mCurrentCount;//需要删除的Item数量
     private int mTotalCount = 0;//总的Item数量
+    private double mTotalPrice = 0.00;
 
     @BindView(R2.id.rv_shop_cart)
     RecyclerView mRecyclerView;
@@ -47,7 +48,7 @@ public class ShopCartDelegate extends BottomItemDelegate implements ICartItemLis
     @BindView(R2.id.stub_no_item)
     ViewStubCompat mStubNoItem = null;
     @BindView(R2.id.tv_shop_cart_total_price)
-    AppCompatTextView mTotalPrice = null;
+    AppCompatTextView mTvTotalPrice = null;
 
     @OnClick(R2.id.icon_shop_cart_select_all)
     void onClickSelectAll() {
@@ -96,6 +97,13 @@ public class ShopCartDelegate extends BottomItemDelegate implements ICartItemLis
         mAdapter.notifyDataSetChanged();
         checkItemCount();
     }
+
+    @OnClick(R2.id.tv_shop_cart_pay)
+    void onClickPay(){
+
+    }
+
+
     @SuppressLint("RestrictedApi")
     private void checkItemCount(){
         final int count = mAdapter.getItemCount();
@@ -149,7 +157,8 @@ public class ShopCartDelegate extends BottomItemDelegate implements ICartItemLis
                         mAdapter = new ShopCartAdapter(dataList);
                         mAdapter.setCartItemListener(ShopCartDelegate.this);
                         mRecyclerView.setAdapter(mAdapter);
-
+                        mTotalPrice = mAdapter.getTotalPrice();
+                        mTvTotalPrice.setText(String.valueOf(mTotalPrice));
                         checkItemCount();
                     }
 
@@ -168,7 +177,7 @@ public class ShopCartDelegate extends BottomItemDelegate implements ICartItemLis
     @Override
     public void onItemClick(double itemTotalPrice) {
         final double price = mAdapter.getTotalPrice();
-        mTotalPrice.setText(String.valueOf(price));
+        mTvTotalPrice.setText(String.valueOf(price));
 
     }
 }
