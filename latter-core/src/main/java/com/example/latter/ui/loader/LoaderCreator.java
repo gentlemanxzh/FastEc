@@ -5,7 +5,6 @@ import android.content.Context;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.wang.avi.Indicator;
 
-
 import java.util.WeakHashMap;
 
 /**

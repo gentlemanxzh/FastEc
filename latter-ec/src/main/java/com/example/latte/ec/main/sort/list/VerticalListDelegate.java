@@ -14,7 +14,7 @@ import com.example.latte.ec.main.sort.SortDelegate;
 import com.example.latter.delegates.LatteDelegate;
 import com.example.latter.net.rx.RxRestClient;
 import com.example.latter.ui.loader.LatteLoader;
-import com.example.latter.ui.recycler.MultipleItemEntity;
+import com.example.ui.recycler.MultipleItemEntity;
 
 import java.util.List;
 

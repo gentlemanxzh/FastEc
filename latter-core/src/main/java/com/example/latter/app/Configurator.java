@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 
 import com.example.latter.delegates.web.event.Event;
 import com.example.latter.delegates.web.event.EventManager;
-import com.example.latter.ui.recycler.ItemType;
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
 import com.orhanobut.logger.AndroidLogAdapter;

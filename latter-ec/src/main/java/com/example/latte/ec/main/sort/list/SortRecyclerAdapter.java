@@ -9,13 +9,15 @@ import com.example.latte.ec.R;
 import com.example.latte.ec.main.sort.SortDelegate;
 import com.example.latte.ec.main.sort.content.ContentDelegate;
 import com.example.latter.delegates.LatteDelegate;
-import com.example.latter.ui.recycler.ItemType;
-import com.example.latter.ui.recycler.MultipleFields;
-import com.example.latter.ui.recycler.MultipleItemEntity;
-import com.example.latter.ui.recycler.MultipleRecyclerAdapter;
-import com.example.latter.ui.recycler.MultipleViewHolder;
+import com.example.ui.recycler.ItemType;
+import com.example.ui.recycler.MultipleFields;
+import com.example.ui.recycler.MultipleItemEntity;
+import com.example.ui.recycler.MultipleRecyclerAdapter;
+import com.example.ui.recycler.MultipleViewHolder;
 
 import java.util.List;
+
+import me.yokeyword.fragmentation.SupportHelper;
 
 /**
  * Created by Gentleman on 2018/6/22.
@@ -94,10 +96,11 @@ public class SortRecyclerAdapter extends MultipleRecyclerAdapter {
     }
 
     private void switchContent(ContentDelegate delegate){
-        final LatteDelegate contentDelegate = DELEGATE.findChildFragment(ContentDelegate.class);
+        final LatteDelegate contentDelegate = SupportHelper.findFragment(DELEGATE.getChildFragmentManager(),ContentDelegate.class);
         if (contentDelegate!=null){
-            contentDelegate.replaceFragment(delegate,false);
+            contentDelegate.getSupportDelegate().replaceFragment(delegate,false);
         }
+
 
     }
 

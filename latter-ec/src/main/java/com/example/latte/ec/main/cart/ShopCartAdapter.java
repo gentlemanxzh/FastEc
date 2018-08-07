@@ -14,10 +14,10 @@ import com.example.latte.ec.R;
 import com.example.latter.app.Latte;
 import com.example.latter.net.rx.RxRestClient;
 import com.example.latter.ui.loader.LatteLoader;
-import com.example.latter.ui.recycler.MultipleFields;
-import com.example.latter.ui.recycler.MultipleItemEntity;
-import com.example.latter.ui.recycler.MultipleRecyclerAdapter;
-import com.example.latter.ui.recycler.MultipleViewHolder;
+import com.example.ui.recycler.MultipleFields;
+import com.example.ui.recycler.MultipleItemEntity;
+import com.example.ui.recycler.MultipleRecyclerAdapter;
+import com.example.ui.recycler.MultipleViewHolder;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.List;

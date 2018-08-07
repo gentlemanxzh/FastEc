@@ -16,10 +16,8 @@ import com.example.latte.ec.R2;
 import com.example.latte.ec.main.EcBottomDelegate;
 import com.example.latter.delegates.bottom.BottomItemDelegate;
 import com.example.latter.net.rx.RxRestClient;
-import com.example.latter.ui.recycler.BaseDecoration;
-import com.example.latter.ui.recycler.MultipleFields;
-import com.example.latter.ui.recycler.MultipleItemEntity;
-import com.example.latter.ui.refresh.RefreshHandler;
+import com.example.ui.recycler.BaseDecoration;
+import com.example.ui.refresh.RefreshHandler;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;

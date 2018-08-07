@@ -12,16 +12,21 @@ import android.support.v7.widget.ViewStubCompat;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.example.latte.ec.R;
 import com.example.latte.ec.R2;
+import com.example.latte.ec.pay.FastPay;
+import com.example.latte.ec.pay.IAlPayResultListener;
 import com.example.latter.delegates.bottom.BottomItemDelegate;
+import com.example.latter.net.RestClient;
 import com.example.latter.net.rx.RxRestClient;
-import com.example.latter.ui.recycler.MultipleItemEntity;
 import com.example.latter.util.log.LatteLogger;
+import com.example.ui.recycler.MultipleItemEntity;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,7 +39,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Gentleman on 2018/7/8.
  */
 
-public class ShopCartDelegate extends BottomItemDelegate implements ICartItemListener {
+public class ShopCartDelegate extends BottomItemDelegate implements ICartItemListener,IAlPayResultListener {
 
     private ShopCartAdapter mAdapter;
     private int mCurrentCount;//需要删除的Item数量
@@ -100,7 +105,54 @@ public class ShopCartDelegate extends BottomItemDelegate implements ICartItemLis
 
     @OnClick(R2.id.tv_shop_cart_pay)
     void onClickPay(){
+       createOrder();
+    }
 
+    //创建订单，和支付没有关系
+    private void createOrder(){
+        final String orderUrl = "";
+        final WeakHashMap<String,Object> orderParams = new WeakHashMap<>();
+        orderParams.put("userId","");
+        orderParams.put("amount",0.01);
+        orderParams.put("comment","测试支付");
+        orderParams.put("type",1);
+        orderParams.put("ordertype",0);
+        orderParams.put("isanonymous",true);
+        orderParams.put("followeduser",0);
+        RxRestClient.builder()
+                .url(orderUrl)
+                .params(orderParams)
+                .loader(getContext())
+                .build()
+                .post()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        LatteLogger.d("ORDER",s);
+                        final int orderId = JSON.parseObject(s).getInteger("result");
+                        FastPay.create(ShopCartDelegate.this)
+                                .setPayResultListener(ShopCartDelegate.this)
+                                .setOrderId(orderId)
+                                .beginPayDialog();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
 
@@ -178,6 +230,31 @@ public class ShopCartDelegate extends BottomItemDelegate implements ICartItemLis
     public void onItemClick(double itemTotalPrice) {
         final double price = mAdapter.getTotalPrice();
         mTvTotalPrice.setText(String.valueOf(price));
+
+    }
+
+    @Override
+    public void onPaySuccess() {
+
+    }
+
+    @Override
+    public void onPaying() {
+
+    }
+
+    @Override
+    public void onPayFail() {
+
+    }
+
+    @Override
+    public void onPayCannel() {
+
+    }
+
+    @Override
+    public void onPayConnectError() {
 
     }
 }

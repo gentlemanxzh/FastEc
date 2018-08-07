@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.example.latte.ec.R;
 import com.example.latter.app.Latte;
-import com.example.latter.ui.recycler.RgbValue;
+import com.example.ui.recycler.RgbValue;
 
 /**
  * @author gentleman

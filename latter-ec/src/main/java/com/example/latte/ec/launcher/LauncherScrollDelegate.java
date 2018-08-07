@@ -11,11 +11,11 @@ import com.example.latte.ec.R;
 import com.example.latter.app.AccountManager;
 import com.example.latter.app.IUserChecker;
 import com.example.latter.delegates.LatteDelegate;
-import com.example.latter.ui.launcher.ILauncherListener;
-import com.example.latter.ui.launcher.LauncherHolderCreator;
-import com.example.latter.ui.launcher.OnLauncherFinishTag;
-import com.example.latter.ui.launcher.ScrollLauncherTag;
 import com.example.latter.util.storage.LatterPreference;
+import com.example.ui.launcher.ILauncherListener;
+import com.example.ui.launcher.LauncherHolderCreator;
+import com.example.ui.launcher.OnLauncherFinishTag;
+import com.example.ui.launcher.ScrollLauncherTag;
 
 import java.util.ArrayList;
 

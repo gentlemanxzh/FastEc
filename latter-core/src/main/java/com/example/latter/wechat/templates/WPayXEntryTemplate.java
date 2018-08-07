@@ -13,4 +13,9 @@ public class WPayXEntryTemplate extends ProxyActivity {
     public LatteDelegate setRootDelegate() {
         return null;
     }
+
+    @Override
+    public void post(Runnable runnable) {
+
+    }
 }

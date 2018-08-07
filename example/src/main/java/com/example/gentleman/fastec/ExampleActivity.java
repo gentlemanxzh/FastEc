@@ -14,8 +14,8 @@ import com.example.latte.ec.sign.SignUpDelegate;
 import com.example.latter.activity.ProxyActivity;
 import com.example.latter.app.Latte;
 import com.example.latter.delegates.LatteDelegate;
-import com.example.latter.ui.launcher.ILauncherListener;
-import com.example.latter.ui.launcher.OnLauncherFinishTag;
+import com.example.ui.launcher.ILauncherListener;
+import com.example.ui.launcher.OnLauncherFinishTag;
 
 import qiu.niorgai.StatusBarCompat;
 
@@ -59,12 +59,12 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
         switch (tag) {
             case SIGNED:
                 Toast.makeText(this, "启动结束了，用户登录了", Toast.LENGTH_SHORT).show();
-                startWithPop(new EcBottomDelegate());
+                getSupportDelegate().startWithPop(new EcBottomDelegate());
                 break;
 
             case NOT_SIGNED:
                 Toast.makeText(this, "启动结束了，用户没有登录", Toast.LENGTH_SHORT).show();
-                startWithPop(new SignInDelegate());
+                getSupportDelegate().startWithPop(new SignInDelegate());
                 break;
             default:
                 break;
