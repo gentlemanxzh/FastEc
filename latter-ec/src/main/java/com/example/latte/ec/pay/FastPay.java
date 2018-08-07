@@ -11,11 +11,17 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.latte.ec.R;
+import com.example.latter.app.ConfigType;
 import com.example.latter.app.Latte;
 import com.example.latter.delegates.LatteDelegate;
 import com.example.latter.net.rx.RxRestClient;
+import com.example.latter.ui.loader.LatteLoader;
 import com.example.latter.util.log.LatteLogger;
+import com.example.latter.wechat.LatteWeChat;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -75,7 +81,7 @@ public class FastPay implements View.OnClickListener {
         return this;
     }
 
-    public final void alPay(int orderId){
+    private void alPay(int orderId){
         final String singUrl = "";
         //获取签名字符串
         RxRestClient.builder()
@@ -112,14 +118,70 @@ public class FastPay implements View.OnClickListener {
                 });
     }
 
+    private  void weChatPay(int orderId){
+        LatteLoader.stopLoading();
+        final String weChatPrePayUrl = "";
+        LatteLogger.d("WX_PAY",weChatPrePayUrl);
+
+        final IWXAPI iwxapi = LatteWeChat.getInstance().getWXAPI();
+        final String appId = Latte.getConfiguration(ConfigType.WE_CHAT_APP_ID);
+        iwxapi.registerApp(appId);
+        RxRestClient.builder()
+                .url(weChatPrePayUrl)
+                .build()
+                .post()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String response) {
+                        final JSONObject result = JSON.parseObject(response).getJSONObject("result");
+                        final String prepayId = result.getString("prepayid");
+                        final String partnerId = result.getString("partnerid");
+                        final String packageValue = result.getString("package");
+                        final String timestamp = result.getString("timestamp");
+                        final String nonceStr = result.getString("noncestr");
+                        final String paySign = result.getString("sign");
+
+                        final PayReq payReq = new PayReq();
+                        payReq.appId = appId;
+                        payReq.prepayId = prepayId;
+                        payReq.partnerId = partnerId;
+                        payReq.packageValue = packageValue;
+                        payReq.timeStamp = timestamp;
+                        payReq.nonceStr = nonceStr;
+                        payReq.sign = paySign;
+
+                        iwxapi.sendReq(payReq);
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
 //    library中不可以使用switch，因为library中id不是常量
     @Override
     public void onClick(View view) {
         int id = view.getId();
         if (id==R.id.btn_dialog_pay_wechat){
-            alPay(mOrderID);
+            weChatPay(mOrderID);
             mDialog.cancel();
         }else if (id==R.id.btn_doalog_pay_alpay){
+            alPay(mOrderID);
             mDialog.cancel();
         }else if (id==R.id.btn_dialog_pay_cancel){
             mDialog.cancel();
