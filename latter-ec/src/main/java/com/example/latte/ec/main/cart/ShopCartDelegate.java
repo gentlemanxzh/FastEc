@@ -9,6 +9,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ViewStubCompat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -257,4 +258,5 @@ public class ShopCartDelegate extends BottomItemDelegate implements ICartItemLis
     public void onPayConnectError() {
 
     }
+
 }

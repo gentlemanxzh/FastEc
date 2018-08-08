@@ -27,6 +27,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import me.yokeyword.fragmentation.SupportHelper;
 
 /**
  * @author gentleman
@@ -91,6 +92,7 @@ public class IndexDelegate extends BottomItemDelegate {
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
         mRefreshHandler = RefreshHandler.create(mRefreshLayout,mRecyclerView,new IndexDataConverter());
+        SupportHelper.showFragmentStackHierarchyView(getProxyActivity());
     }
 
     @Override

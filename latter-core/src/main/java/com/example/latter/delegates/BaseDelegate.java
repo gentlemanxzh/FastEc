@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
 import com.example.latter.activity.ProxyActivity;
 
@@ -31,6 +32,7 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
     @SuppressWarnings("SpellCheckingInspection")
     private Unbinder mUnbinder;
     private final SupportFragmentDelegate DELEGATE = new SupportFragmentDelegate(this);
+    protected FragmentActivity _mActivity;
 
     public abstract Object setLayout();
 
@@ -61,7 +63,6 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
         return (ProxyActivity) _mActivity;
     }
 
-    protected FragmentActivity _mActivity;
 
     @Override
     public SupportFragmentDelegate getSupportDelegate() {
@@ -74,9 +75,9 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        DELEGATE.onAttach((Activity) context);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        DELEGATE.onAttach(activity);
         _mActivity = DELEGATE.getActivity();
     }
 
@@ -84,6 +85,14 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DELEGATE.onCreate(savedInstanceState);
+    }
+
+    /**
+     * 不复写这个方法会导致页面切换后背景问题
+     */
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        return DELEGATE.onCreateAnimation(transit, enter, nextAnim);
     }
 
     @Override
@@ -137,6 +146,11 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
     @Override
     public void enqueueAction(Runnable runnable) {
         DELEGATE.enqueueAction(runnable);
+    }
+
+    @Override
+    public void post(Runnable runnable) {
+        DELEGATE.post(runnable);
     }
 
     @Override
@@ -215,8 +229,7 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
         DELEGATE.start(toFragment, launchMode);
     }
 
-    @Override
-    public void post(Runnable runnable) {
-
+    public void startWithPop(ISupportFragment toFragment){
+        DELEGATE.startWithPop(toFragment);
     }
 }

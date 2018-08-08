@@ -40,7 +40,7 @@ public class LauncherDelegate extends LatteDelegate implements ITimeListener {
 
     private ILauncherListener mILauncherListener = null;
 
-    @OnClick
+    @OnClick(R2.id.tv_launcher_timer)
     void onClickTimerView(){
         if (mTimer!=null){
             mTimer.cancel();

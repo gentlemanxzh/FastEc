@@ -88,6 +88,6 @@ public abstract class ProxyActivity extends AppCompatActivity implements ISuppor
 
     @Override
     public void post(Runnable runnable) {
-
+//        DELEGATE.post(runnable);
     }
 }
