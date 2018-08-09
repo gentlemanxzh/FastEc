@@ -104,8 +104,9 @@ public class ListBean implements MultiItemEntity {
             return this;
         }
 
-        public void setImageUrl(String imageUrl) {
+        public Builder setImageUrl(String imageUrl) {
             this.imageUrl = imageUrl;
+            return this;
         }
 
         public ListBean build(){
