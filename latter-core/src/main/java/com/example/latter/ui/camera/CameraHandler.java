@@ -1,4 +1,4 @@
-package com.example.ui.camera;
+package com.example.latter.ui.camera;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -8,15 +8,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.support.v4.content.PermissionChecker;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.example.latter.R;
 import com.example.latter.delegates.PermissionCheckerDelegate;
 import com.example.latter.util.file.FileUtil;
-import com.example.ui.R;
 
 import java.io.File;
 
@@ -31,8 +31,8 @@ public class CameraHandler implements View.OnClickListener {
     private final AlertDialog DIALOG;
     private final PermissionCheckerDelegate DELEGATE;
 
-    public CameraHandler(AlertDialog dialog,PermissionCheckerDelegate delegate){
-        this.DIALOG = dialog;
+    public CameraHandler(PermissionCheckerDelegate delegate){
+        this.DIALOG = new AlertDialog.Builder(delegate.getContext()).create();
         this.DELEGATE = delegate;
     }
 
@@ -73,7 +73,11 @@ public class CameraHandler implements View.OnClickListener {
     }
 
     private void pickPhoto() {
-
+        final Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        DELEGATE.startActivityForResult(Intent.createChooser(intent,"选择获取图片的方式"),RequestCodes.PICK_PHOTO);
     }
 
     private void takePhoto() {
@@ -86,8 +90,17 @@ public class CameraHandler implements View.OnClickListener {
             contentValues.put(MediaStore.Images.Media.DATA,tempFile.getPath());
             final Uri uri = DELEGATE.getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     contentValues);
-
+            //需要将Uri路径转化为实际路径
+            final File realFile = FileUtils.getFileByPath(FileUtil.getRealFilePath(DELEGATE.getContext(),uri));
+            final Uri realUri = Uri.fromFile(realFile);
+            CameraImageBean.getInstance().setPath(realUri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
+        }else {
+            final Uri fileUri = Uri.fromFile(tempFile);
+            CameraImageBean.getInstance().setPath(fileUri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT,fileUri);
         }
+        DELEGATE.startActivityForResult(intent, RequestCodes.TAKE_PHOTO);
     }
 
     private String getPhotoName(){
