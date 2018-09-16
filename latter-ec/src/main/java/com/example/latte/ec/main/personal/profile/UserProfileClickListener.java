@@ -2,6 +2,7 @@ package com.example.latte.ec.main.personal.profile;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,7 +10,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
 import com.example.latte.ec.R;
 import com.example.latte.ec.main.personal.list.ListBean;
+import com.example.latter.app.Latte;
 import com.example.latter.delegates.LatteDelegate;
+import com.example.latter.util.callback.CallbackManager;
+import com.example.latter.util.callback.CallbackType;
+import com.example.latter.util.callback.IGlobalCallback;
+import com.example.latter.util.log.LatteLogger;
 import com.example.ui.date.DateDialogUtil;
 
 /**
@@ -34,7 +40,15 @@ public class UserProfileClickListener extends SimpleClickListener {
         final int id = bean.getmId();
         switch (id) {
             case 1:
-                //TODO 开始照相机或选择图片
+                //开始照相机或选择图片
+                CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
+                    @Override
+                    public void exeuteCallback(Uri args) {
+                        LatteLogger.d("ON_CROP",args);
+                    }
+                });
+                DELEGATE.startCameraWithCheck();
+
                 break;
             case 2:
                 final LatteDelegate nameDelegate = bean.getmDelegate();

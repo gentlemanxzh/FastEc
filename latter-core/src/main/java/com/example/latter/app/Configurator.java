@@ -58,10 +58,10 @@ public class Configurator {
      * 配置信息已经配置完成的方法
      */
     public final void configure() {
-        Utils.init(Latte.getApplicationContext());
         initIcons();
         Logger.addLogAdapter(new AndroidLogAdapter());
         LATTE_CONFIGS.put(ConfigType.CONFIG_READY, true);
+        Utils.init(Latte.getApplicationContext());
     }
 
     /**

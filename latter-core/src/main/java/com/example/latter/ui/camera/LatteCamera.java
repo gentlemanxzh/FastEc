@@ -21,4 +21,6 @@ public class LatteCamera {
     public static void start(PermissionCheckerDelegate delegate){
         new CameraHandler(delegate).beginCameraDialog();
     }
+
+
 }
