@@ -14,6 +14,7 @@ import com.example.latte.ec.main.personal.list.ListBean;
 import com.example.latte.ec.main.personal.list.ListItemType;
 import com.example.latte.ec.main.personal.order.OrderListDelegate;
 import com.example.latte.ec.main.personal.profile.UserProfileDelegate;
+import com.example.latte.ec.main.personal.settings.SettingDelegate;
 import com.example.latter.delegates.bottom.BottomItemDelegate;
 
 import java.util.ArrayList;
@@ -42,18 +43,18 @@ public class PersonalDelegate extends BottomItemDelegate {
     }
 
     @OnClick(R2.id.tv_all_order)
-    void onClickAllOrder(){
-        mArgs.putString(ORDER_TYPE,"all");
+    void onClickAllOrder() {
+        mArgs.putString(ORDER_TYPE, "all");
         startOrderListByType();
     }
 
     @OnClick(R2.id.img_user_avatar)
-    void onClickAvatar(){
+    void onClickAvatar() {
         getParentDelegate().getSupportDelegate().start(new UserProfileDelegate());
 
     }
 
-    private void startOrderListByType(){
+    private void startOrderListByType() {
         final OrderListDelegate delegate = new OrderListDelegate();
         delegate.setArguments(mArgs);
         getParentDelegate().getSupportDelegate().start(delegate);
@@ -67,25 +68,26 @@ public class PersonalDelegate extends BottomItemDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
-      final   ListBean address = new ListBean.Builder()
+        final ListBean address = new ListBean.Builder()
                 .setItemType(ListItemType.ITEM_NORMAL)
                 .setId(1)
-              .setDelegate(new AddressDelegate())
+                .setDelegate(new AddressDelegate())
                 .setText("收货地址")
                 .build();
 
-      final   ListBean system = new ListBean.Builder()
+        final ListBean system = new ListBean.Builder()
                 .setItemType(ListItemType.ITEM_NORMAL)
                 .setId(2)
+                .setDelegate(new SettingDelegate())
                 .setText("系统设置")
                 .build();
 
-      final List<ListBean> data = new ArrayList<>();
-      data.add(address);
-      data.add(system);
+        final List<ListBean> data = new ArrayList<>();
+        data.add(address);
+        data.add(system);
 
-      //设置RecyclerView
-       final LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        //设置RecyclerView
+        final LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRvSetting.setLayoutManager(manager);
         final ListAdapter adapter = new ListAdapter(data);
         mRvSetting.setAdapter(adapter);

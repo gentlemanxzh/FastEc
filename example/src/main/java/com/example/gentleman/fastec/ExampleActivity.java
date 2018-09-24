@@ -17,6 +17,7 @@ import com.example.latter.delegates.LatteDelegate;
 import com.example.ui.launcher.ILauncherListener;
 import com.example.ui.launcher.OnLauncherFinishTag;
 
+import cn.jpush.android.api.JPushInterface;
 import qiu.niorgai.StatusBarCompat;
 
 public class ExampleActivity extends ProxyActivity implements ISignListener, ILauncherListener {
@@ -39,14 +40,22 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-
+        JPushInterface.onResume(this);
     }
+
 
     @Override
     public void onSignInSuccess() {
         Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+        getSupportDelegate().startWithPop(new EcBottomDelegate());
     }
 
     @Override
