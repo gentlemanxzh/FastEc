@@ -56,8 +56,7 @@ public class ExampleApp extends Application {
                     public void executeCallback(@Nullable Object args) {
                         if (JPushInterface.isPushStopped(Latte.getApplicationContext())) {
                             //开启极光推送
-                            JPushInterface.setDebugMode(true);
-                            JPushInterface.init(Latte.getApplicationContext());
+                           JPushInterface.resumePush(Latte.getApplicationContext());
                         }
                     }
                 })
