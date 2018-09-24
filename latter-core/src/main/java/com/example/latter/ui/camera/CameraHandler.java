@@ -72,6 +72,9 @@ public class CameraHandler implements View.OnClickListener {
         }
     }
 
+    /**
+     * 选择本地图片
+     */
     private void pickPhoto() {
         final Intent intent = new Intent();
         intent.setType("image/*");
@@ -80,6 +83,9 @@ public class CameraHandler implements View.OnClickListener {
         DELEGATE.startActivityForResult(Intent.createChooser(intent,"选择获取图片的方式"),RequestCodes.PICK_PHOTO);
     }
 
+    /**
+     * 打开相机
+     */
     private void takePhoto() {
         final String currentPhotoName = getPhotoName();
         final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

@@ -4,19 +4,27 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
 import com.example.latte.ec.R;
 import com.example.latte.ec.main.personal.list.ListBean;
 import com.example.latter.app.Latte;
 import com.example.latter.delegates.LatteDelegate;
+import com.example.latter.net.rx.RxRestClient;
 import com.example.latter.util.callback.CallbackManager;
 import com.example.latter.util.callback.CallbackType;
 import com.example.latter.util.callback.IGlobalCallback;
 import com.example.latter.util.log.LatteLogger;
 import com.example.ui.date.DateDialogUtil;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author gentleman
@@ -43,8 +51,42 @@ public class UserProfileClickListener extends SimpleClickListener {
                 //开始照相机或选择图片
                 CallbackManager.getInstance().addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
                     @Override
-                    public void exeuteCallback(Uri args) {
+                    public void executeCallback(Uri args) {
                         LatteLogger.d("ON_CROP",args);
+                        final ImageView avatar = view.findViewById(R.id.img_arrow_avatar);
+                        Glide.with(DELEGATE)
+                                .load(args)
+                                .into(avatar);
+                        //上传头像文件
+                        RxRestClient.builder()
+                                .url("")
+                                .loader(DELEGATE.getContext())
+                                .file(args.getPath())
+                                .build()
+                                .upload()
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Observer<String>() {
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(String s) {
+                                        //TODO 1、通知服务器进行用户信息更改 2、然后本地数据更新
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+
+                                    }
+                                });
                     }
                 });
                 DELEGATE.startCameraWithCheck();

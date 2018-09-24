@@ -1,7 +1,6 @@
 package com.example.latter.delegates;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
-import com.example.latter.app.Latte;
 import com.example.latter.ui.camera.CameraImageBean;
 import com.example.latter.ui.camera.LatteCamera;
 import com.example.latter.ui.camera.RequestCodes;
@@ -122,7 +120,7 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
                             .getCallback(CallbackType.ON_CROP);
 
                     if (callback!=null){
-                        callback.exeuteCallback(croupUri);
+                        callback.executeCallback(croupUri);
                     }
 
 

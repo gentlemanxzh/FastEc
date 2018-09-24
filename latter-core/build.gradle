@@ -39,6 +39,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.1.0'
     compile 'com.android.support:design:27.+'
     compile 'com.android.support:support-v4:27.+'
+    compile 'com.android.support:cardview-v7:27.+'
 
     // 图标库
     compile 'com.joanzapata.iconify:android-iconify-ionicons:2.2.2'

@@ -6,6 +6,6 @@ package com.example.latter.util.callback;
 
 public interface IGlobalCallback<T> {
 
-    void exeuteCallback(T args);
+    void executeCallback(T args);
 
 }
