@@ -3,7 +3,6 @@ package com.example.ui.widget;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
@@ -46,7 +45,7 @@ public class AutoPhotoLayout extends LinearLayout {
     private boolean mIsOnceInitOnMeasure = false;
 
     //每一行代表一个List<View>
-    private static final List<List<View>> ALL_Views = new ArrayList<>();
+    private static final List<List<View>> ALL_VIEWS = new ArrayList<>();
     private static final List<Integer> LINE_HEIGHTS = new ArrayList<>();
 
     public AutoPhotoLayout(Context context) {
@@ -124,7 +123,17 @@ public class AutoPhotoLayout extends LinearLayout {
             mParams = new LayoutParams(imagesSideLen,imagesSideLen);
             mIsOnceInitOnMeasure = true;
         }
+    }
 
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        ALL_VIEWS.clear();
+        LINE_HEIGHTS.clear();
+        //当前ViewGroup的宽度
+        final int width = getWidth();
+        int lineWidth = 0;
+        int lineHeight=  0;
+        
     }
 
     private void initAddIcon() {

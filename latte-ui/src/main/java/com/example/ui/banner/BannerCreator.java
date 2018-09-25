@@ -3,7 +3,7 @@ package com.example.ui.banner;
 import com.ToxicBakery.viewpager.transforms.DefaultTransformer;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
-import com.example.latter.R;
+import com.example.ui.R;
 
 import java.util.ArrayList;
 
@@ -26,8 +26,6 @@ public class BannerCreator {
                 .setPageTransformer(new DefaultTransformer())
                 .startTurning(3000)
                 .setCanLoop(true);
-
-
 
     }
 }
