@@ -17,6 +17,8 @@ import com.joanzapata.iconify.widget.IconTextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.crypto.Mac;
+
 /**
  * Created by on 2018-09-25 下午 3:39.
  *
@@ -43,6 +45,7 @@ public class AutoPhotoLayout extends LinearLayout {
 
     //防止多次的侧量和布局过程
     private boolean mIsOnceInitOnMeasure = false;
+    private boolean mHasInitOnLayout = false;
 
     //每一行代表一个List<View>
     private static final List<List<View>> ALL_VIEWS = new ArrayList<>();
@@ -117,13 +120,14 @@ public class AutoPhotoLayout extends LinearLayout {
         );
 
         //设置一行所有图片的宽高
-        final int imagesSideLen = sizeWidth/mMaxLineNum;
+        final int imagesSideLen = sizeWidth / mMaxLineNum;
         //只初始化一次
-        if(!mIsOnceInitOnMeasure){
-            mParams = new LayoutParams(imagesSideLen,imagesSideLen);
+        if (!mIsOnceInitOnMeasure) {
+            mParams = new LayoutParams(imagesSideLen, imagesSideLen);
             mIsOnceInitOnMeasure = true;
         }
     }
+
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -132,8 +136,69 @@ public class AutoPhotoLayout extends LinearLayout {
         //当前ViewGroup的宽度
         final int width = getWidth();
         int lineWidth = 0;
-        int lineHeight=  0;
-        
+        int lineHeight = 0;
+        if (!mHasInitOnLayout) {
+            mLineViews = new ArrayList<>();
+            mHasInitOnLayout = true;
+        }
+        final int cCount = getChildCount();
+        for (int i = 0; i < cCount; i++) {
+            final View child = getChildAt(i);
+            final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+            final int childWidth = child.getMeasuredWidth();
+            final int childHeight = child.getMeasuredHeight();
+            //如果需要换行的时候
+            if (childWidth + lineWidth + lp.leftMargin + lp.rightMargin >
+                    width - getPaddingLeft() - getPaddingRight()) {
+                //记录lineHeight
+                LINE_HEIGHTS.add(lineHeight);
+                //记录当前一行的views
+                ALL_VIEWS.add(mLineViews);
+                //重置宽和高
+                lineWidth = 0;
+                lineHeight = childHeight + lp.topMargin + lp.bottomMargin;
+                //重置View集合
+                mLineViews.clear();
+            }
+            lineWidth += childWidth + lp.leftMargin + lp.rightMargin;
+            lineHeight = Math.max(lineHeight, lineHeight + lp.topMargin + lp.bottomMargin);
+            mLineViews.add(child);
+        }
+        //处理最后一行
+        LINE_HEIGHTS.add(lineHeight);
+        ALL_VIEWS.add(mLineViews);
+        //设置子View位置
+         int left = getPaddingLeft();
+         int top = getPaddingTop();
+        //行数
+        final int lineNum = ALL_VIEWS.size();
+        for (int i = 0;i<lineNum;i++){
+            //当前行所有的View
+            mLineViews = ALL_VIEWS.get(i);
+            lineHeight = LINE_HEIGHTS.get(i);
+            //循环每一行里面元素的集合
+            final int size = mLineViews.size();
+            for (int j = 0;j<size;j++){
+                 final  View child = mLineViews.get(j);
+                 //判断child的状态
+                if (child.getVisibility()==GONE){
+                    continue;
+                }
+                final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+                //设置子View的边距
+                final int lc = left+lp.leftMargin;
+                final int tc = top+lp.topMargin;
+                final int rc =lc+child.getMeasuredWidth()-mImageMargin;
+                final int bc = tc+child.getMeasuredHeight();
+                //为子View进行布局
+                child.layout(lc,tc,rc, bc);
+                left+=child.getMeasuredWidth()+lp.leftMargin+lp.rightMargin;
+            }
+            left = getPaddingLeft();
+            top+=lineHeight;
+        }
+        mIconAdd.setLayoutParams(mParams);
+        mHasInitOnLayout = false;
     }
 
     private void initAddIcon() {
