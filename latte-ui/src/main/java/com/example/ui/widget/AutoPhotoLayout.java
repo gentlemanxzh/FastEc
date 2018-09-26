@@ -72,7 +72,7 @@ public class AutoPhotoLayout extends LinearLayout {
         this(context, attrs, 0);
     }
 
-    public AutoPhotoLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public AutoPhotoLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.camera_flow_layout);
         mMaxNum = typedArray.getInt(R.styleable.camera_flow_layout_max_count, 1);
@@ -129,7 +129,29 @@ public class AutoPhotoLayout extends LinearLayout {
                                     animation.setStartOffset(0);
                                     deleImageView.setAnimation(animation);
                                     animation.start();
-//                                    AutoPhotoLayout.this.removeAllViews();
+                                    AutoPhotoLayout.this.removeView(deleImageView);
+                                    mCurrentNum-=1;
+                                    //当数据达到上限时隐藏添加按钮，不足时显示
+                                    if (mCurrentNum<mMaxNum){
+                                        mIconAdd.setVisibility(VISIBLE);
+                                    }
+                                    mTargetDialog.cancel();
+                                }
+                            });
+
+                    window.findViewById(R.id.dialog_image_clicked_btn_undetermined)
+                            .setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mTargetDialog.cancel();
+                                }
+                            });
+
+                    window.findViewById(R.id.dialog_image_clicked_btn_cancel)
+                            .setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mTargetDialog.cancel();
                                 }
                             });
                 }
