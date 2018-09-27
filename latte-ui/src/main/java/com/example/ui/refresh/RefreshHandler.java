@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.latter.app.Latte;
 import com.example.latter.net.rx.RxRestClient;
+import com.example.latter.ui.scanner.ScanView;
 import com.example.ui.recycler.DataConverter;
 import com.example.ui.recycler.MultipleRecyclerAdapter;
 
@@ -96,6 +97,52 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,Base
 
     }
 
+    private void paging(final String PagUrl){
+        final int pageSize = BEAN.getPageSize();
+        final int currentCount = BEAN.getCurrentCount();
+        final int total = BEAN.getCurrentCount();
+        final int index = BEAN.getPageIndex();
+        if (mAdapter.getData().size()<pageSize||currentCount>=total){
+            mAdapter.loadMoreEnd();
+        }else {
+            Latte.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    RxRestClient.builder()
+                            .url(PagUrl)
+                            .build()
+                            .get()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<String>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+
+                                }
+
+                                @Override
+                                public void onNext(String s) {
+                                    mAdapter.addData(CONVERTER.setJsonData(s).convert());
+                                    BEAN.setCurrentCount(mAdapter.getData().size());
+                                    mAdapter.loadMoreComplete();
+                                    BEAN.addIndex();
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+                            });
+                }
+            },1000);
+        }
+    }
+
 
     @Override
     public void onRefresh() {
@@ -104,6 +151,6 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,Base
 
     @Override
     public void onLoadMoreRequested() {
-
+        paging( "http://oxjde2kpq.bkt.clouddn.com/index_2_data.json");
     }
 }
