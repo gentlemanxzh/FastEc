@@ -26,8 +26,6 @@ import com.joanzapata.iconify.widget.IconTextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.crypto.Mac;
-
 /**
  * Created by on 2018-09-25 下午 3:39.
  *
@@ -37,20 +35,20 @@ import javax.crypto.Mac;
 public class AutoPhotoLayout extends LinearLayout {
 
     private int mCurrentNum = 0;
-    private int mMaxNum = 0;
-    private int mMaxLineNum = 0;
+    private int mMaxNum;
+    private int mMaxLineNum;
     private IconTextView mIconAdd = null;
     private LayoutParams mParams = null;
     //要删除的图片ID
     private int mDeleteId = 0;
     private AppCompatImageView mTargetImageView = null;
     //图片之间的空隙
-    private int mImageMargin = 0;
+    private int mImageMargin;
     private LatteDelegate mDelegate = null;
     private List<View> mLineViews = null;
     private AlertDialog mTargetDialog = null;
     private static final String ICON_TEXT = "{fa-plus}";
-    private float mIconSize = 0;
+    private float mIconSize;
 
     //防止多次的侧量和布局过程
     private boolean mIsOnceInitOnMeasure = false;
@@ -87,14 +85,14 @@ public class AutoPhotoLayout extends LinearLayout {
     }
 
     public final void onCropTarget(Uri uri) {
-        createImageView();
+        createNewImageView();
         Glide.with(mDelegate)
                 .load(uri)
                 .apply(OPTIONS)
                 .into(mTargetImageView);
     }
 
-    private void createImageView() {
+    private void createNewImageView() {
         mTargetImageView = new AppCompatImageView(getContext());
         mTargetImageView.setId(mCurrentNum);
         mTargetImageView.setLayoutParams(mParams);
@@ -105,7 +103,7 @@ public class AutoPhotoLayout extends LinearLayout {
                 mDeleteId = v.getId();
                 mTargetDialog.show();
                 final Window window = mTargetDialog.getWindow();
-                if (window!=null){
+                if (window != null) {
                     window.setContentView(R.layout.dialog_image_click_panel);
                     window.setGravity(Gravity.BOTTOM);
                     window.setWindowAnimations(R.style.anim_panel_up_from_bottom);
@@ -119,26 +117,26 @@ public class AutoPhotoLayout extends LinearLayout {
                             .setOnClickListener(new OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    //得到我们的图片
-                                    final AppCompatImageView deleImageView = findViewById(mDeleteId);
+                                    //得到要删除的图片
+                                    final AppCompatImageView deleteImageViwe =
+                                            (AppCompatImageView) findViewById(mDeleteId);
                                     //设置图片逐渐消失的动画
-                                    final AlphaAnimation animation = new AlphaAnimation(1,0);
+                                    final AlphaAnimation animation = new AlphaAnimation(1, 0);
                                     animation.setDuration(500);
                                     animation.setRepeatCount(0);
                                     animation.setFillAfter(true);
                                     animation.setStartOffset(0);
-                                    deleImageView.setAnimation(animation);
+                                    deleteImageViwe.setAnimation(animation);
                                     animation.start();
-                                    AutoPhotoLayout.this.removeView(deleImageView);
-                                    mCurrentNum-=1;
-                                    //当数据达到上限时隐藏添加按钮，不足时显示
-                                    if (mCurrentNum<mMaxNum){
+                                    AutoPhotoLayout.this.removeView(deleteImageViwe);
+                                    mCurrentNum -= 1;
+                                    //当数目达到上限时隐藏添加按钮，不足时显示
+                                    if (mCurrentNum < mMaxNum) {
                                         mIconAdd.setVisibility(VISIBLE);
                                     }
                                     mTargetDialog.cancel();
                                 }
                             });
-
                     window.findViewById(R.id.dialog_image_clicked_btn_undetermined)
                             .setOnClickListener(new OnClickListener() {
                                 @Override
@@ -146,7 +144,6 @@ public class AutoPhotoLayout extends LinearLayout {
                                     mTargetDialog.cancel();
                                 }
                             });
-
                     window.findViewById(R.id.dialog_image_clicked_btn_cancel)
                             .setOnClickListener(new OnClickListener() {
                                 @Override
@@ -155,15 +152,14 @@ public class AutoPhotoLayout extends LinearLayout {
                                 }
                             });
                 }
-
             }
         });
-        //添加子view的时候传入位置
+        //添加子View的时候传入位置
         this.addView(mTargetImageView, mCurrentNum);
         mCurrentNum++;
-        //当添加数据大于maxNum的时候隐藏添加按钮
+        //当天家数目大于mMaxNum时，自动隐藏添加按钮
         if (mCurrentNum >= mMaxNum) {
-            mIconAdd.setVisibility(GONE);
+            mIconAdd.setVisibility(View.GONE);
         }
     }
 
@@ -188,7 +184,7 @@ public class AutoPhotoLayout extends LinearLayout {
             //得到LayoutParams
             final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
             //子View占据的宽度
-            int childWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
+            final int childWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
             //子View占据的高度
             final int childHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
             //换行
@@ -207,7 +203,7 @@ public class AutoPhotoLayout extends LinearLayout {
                 lineHeight = Math.max(lineHeight, childHeight);
             }
             if (i == cCount - 1) {
-                width = Math.max(lineHeight, width);
+                width = Math.max(lineWidth, width);
                 //判断时候超过最大拍照限制
                 height += lineHeight;
             }
@@ -231,7 +227,7 @@ public class AutoPhotoLayout extends LinearLayout {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         ALL_VIEWS.clear();
         LINE_HEIGHTS.clear();
-        //当前ViewGroup的宽度
+        // 当前ViewGroup的宽度
         final int width = getWidth();
         int lineWidth = 0;
         int lineHeight = 0;
@@ -243,14 +239,14 @@ public class AutoPhotoLayout extends LinearLayout {
         for (int i = 0; i < cCount; i++) {
             final View child = getChildAt(i);
             final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
-            final int childWidth = child.getMeasuredWidth();
+            final int childWith = child.getMeasuredWidth();
             final int childHeight = child.getMeasuredHeight();
-            //如果需要换行的时候
-            if (childWidth + lineWidth + lp.leftMargin + lp.rightMargin >
+            //如果需要换行
+            if (childWith + lineWidth + lp.leftMargin + lp.rightMargin >
                     width - getPaddingLeft() - getPaddingRight()) {
                 //记录lineHeight
                 LINE_HEIGHTS.add(lineHeight);
-                //记录当前一行的views
+                //记录当前一行的Views
                 ALL_VIEWS.add(mLineViews);
                 //重置宽和高
                 lineWidth = 0;
@@ -258,7 +254,7 @@ public class AutoPhotoLayout extends LinearLayout {
                 //重置View集合
                 mLineViews.clear();
             }
-            lineWidth += childWidth + lp.leftMargin + lp.rightMargin;
+            lineWidth += childWith + lp.leftMargin + lp.rightMargin;
             lineHeight = Math.max(lineHeight, lineHeight + lp.topMargin + lp.bottomMargin);
             mLineViews.add(child);
         }
@@ -274,7 +270,6 @@ public class AutoPhotoLayout extends LinearLayout {
             //当前行所有的View
             mLineViews = ALL_VIEWS.get(i);
             lineHeight = LINE_HEIGHTS.get(i);
-            //循环每一行里面元素的集合
             final int size = mLineViews.size();
             for (int j = 0; j < size; j++) {
                 final View child = mLineViews.get(j);
