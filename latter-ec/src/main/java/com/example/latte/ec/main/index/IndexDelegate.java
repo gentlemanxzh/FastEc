@@ -16,6 +16,9 @@ import com.example.latte.ec.R2;
 import com.example.latte.ec.main.EcBottomDelegate;
 import com.example.latter.delegates.bottom.BottomItemDelegate;
 import com.example.latter.net.rx.RxRestClient;
+import com.example.latter.util.callback.CallbackManager;
+import com.example.latter.util.callback.CallbackType;
+import com.example.latter.util.callback.IGlobalCallback;
 import com.example.ui.recycler.BaseDecoration;
 import com.example.ui.refresh.RefreshHandler;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -23,6 +26,7 @@ import com.joanzapata.iconify.widget.IconTextView;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -50,6 +54,11 @@ public class IndexDelegate extends BottomItemDelegate {
     IconTextView mIconMessage = null;
 
     private RefreshHandler mRefreshHandler = null;
+
+    @OnClick(R2.id.icon_index_scan)
+    void onClickScanQrCode(){
+        startScanWithCheck(this.getParentDelegate());
+    }
 
 
     private void initRefreshLayout() {
@@ -93,6 +102,13 @@ public class IndexDelegate extends BottomItemDelegate {
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
         mRefreshHandler = RefreshHandler.create(mRefreshLayout,mRecyclerView,new IndexDataConverter());
         SupportHelper.showFragmentStackHierarchyView(getProxyActivity());
+        CallbackManager.getInstance()
+                .addCallback(CallbackType.ON_SCAN, new IGlobalCallback<String>() {
+                    @Override
+                    public void executeCallback(@Nullable String args) {
+                        Toast.makeText(_mActivity, "得到的二维码是："+args, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override

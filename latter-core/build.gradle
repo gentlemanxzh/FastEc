@@ -105,4 +105,7 @@ dependencies {
     //图片剪裁框架
     compile 'com.github.yalantis:ucrop:2.2.1-native'
 
+    //二维码扫描
+    compile 'me.dm7.barcodescanner:zbar:1.9.8'
+
 }
