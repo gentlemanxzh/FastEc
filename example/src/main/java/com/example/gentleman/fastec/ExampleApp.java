@@ -3,6 +3,7 @@ package com.example.gentleman.fastec;
 import android.app.Application;
 import android.support.annotation.Nullable;
 
+import com.example.gentleman.fastec.event.ShareEvent;
 import com.example.latte.ec.database.DatabaseManager;
 import com.example.latte.ec.icon.FontEcModule;
 import com.example.latter.app.Latte;
@@ -36,6 +37,7 @@ public class ExampleApp extends Application {
                 .withWeChatAppSecret("")
                 .withJavaScriptInterface("latte")
                 .withWebEvent("test",new TestEvent())
+                .withWebEvent("share",new ShareEvent())
                 //添加cookie同步拦截器
                 .withInterceptor(new AddCookieInterceptor())
                 .withWebHost("https://www.baidu.com/")
