@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.latte.ec.R;
 import com.example.latte.ec.R2;
 import com.example.latte.ec.main.EcBottomDelegate;
+import com.example.latte.ec.main.index.search.SearchDelegate;
 import com.example.latter.delegates.bottom.BottomItemDelegate;
 import com.example.latter.net.rx.RxRestClient;
 import com.example.latter.util.callback.CallbackManager;
@@ -38,7 +39,7 @@ import me.yokeyword.fragmentation.SupportHelper;
  * @date 2018/6/8
  */
 
-public class IndexDelegate extends BottomItemDelegate {
+public class IndexDelegate extends BottomItemDelegate implements View.OnFocusChangeListener {
 
     @BindView(R2.id.rv_index)
     RecyclerView mRecyclerView = null;
@@ -56,7 +57,7 @@ public class IndexDelegate extends BottomItemDelegate {
     private RefreshHandler mRefreshHandler = null;
 
     @OnClick(R2.id.icon_index_scan)
-    void onClickScanQrCode(){
+    void onClickScanQrCode() {
         startScanWithCheck(this.getParentDelegate());
     }
 
@@ -71,11 +72,11 @@ public class IndexDelegate extends BottomItemDelegate {
         mRefreshLayout.setProgressViewOffset(true, 120, 300);
     }
 
-    private void initRecyclerView(){
-        final GridLayoutManager manager = new GridLayoutManager(getContext(),4);
+    private void initRecyclerView() {
+        final GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.addItemDecoration(
-                BaseDecoration.create(ContextCompat.getColor(getContext(),R.color.app_background),5));
+                BaseDecoration.create(ContextCompat.getColor(getContext(), R.color.app_background), 5));
         //获取父布局实例
         final EcBottomDelegate ecBottomDelegate = getParentDelegate();
         mRecyclerView.addOnItemTouchListener(IndexItemClickListener.create(ecBottomDelegate));
@@ -100,20 +101,28 @@ public class IndexDelegate extends BottomItemDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
-        mRefreshHandler = RefreshHandler.create(mRefreshLayout,mRecyclerView,new IndexDataConverter());
+        mRefreshHandler = RefreshHandler.create(mRefreshLayout, mRecyclerView, new IndexDataConverter());
         SupportHelper.showFragmentStackHierarchyView(getProxyActivity());
         CallbackManager.getInstance()
                 .addCallback(CallbackType.ON_SCAN, new IGlobalCallback<String>() {
                     @Override
                     public void executeCallback(@Nullable String args) {
-                        Toast.makeText(_mActivity, "得到的二维码是："+args, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(_mActivity, "得到的二维码是：" + args, Toast.LENGTH_SHORT).show();
                     }
                 });
+        mSearchView.setOnFocusChangeListener(this);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       mToolbar.getBackground().mutate().setAlpha(0);
+        mToolbar.getBackground().mutate().setAlpha(0);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            getParentDelegate().getSupportDelegate().start(new SearchDelegate());
+        }
     }
 }
