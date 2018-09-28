@@ -21,7 +21,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Gentleman on 2018/6/9.
  */
 
-public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener {
+public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
 
     private final SwipeRefreshLayout REFRESH_LAYOUT;
     private final PagingBean BEAN;
@@ -76,9 +76,9 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,Base
                         final JSONObject object = JSON.parseObject(response);
                         BEAN.setTotal(object.getInteger("total"))
                                 .setPageSize(object.getInteger("page_size"));
-                                //设置Adapter
+                        //设置Adapter
                         mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(response));
-                        mAdapter.setOnLoadMoreListener(RefreshHandler.this,RECYCLERVIEW);
+                        mAdapter.setOnLoadMoreListener(RefreshHandler.this, RECYCLERVIEW);
                         RECYCLERVIEW.setAdapter(mAdapter);
                         BEAN.addIndex();
 
@@ -97,14 +97,14 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,Base
 
     }
 
-    private void paging(final String PagUrl){
+    private void paging(final String PagUrl) {
         final int pageSize = BEAN.getPageSize();
         final int currentCount = BEAN.getCurrentCount();
-        final int total = BEAN.getCurrentCount();
+        final int total = BEAN.getTotal();
         final int index = BEAN.getPageIndex();
-        if (mAdapter.getData().size()<pageSize||currentCount>=total){
+        if (mAdapter.getData().size() < pageSize || currentCount >= total) {
             mAdapter.loadMoreEnd();
-        }else {
+        } else {
             Latte.getHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -139,7 +139,7 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,Base
                                 }
                             });
                 }
-            },1000);
+            }, 1000);
         }
     }
 
@@ -151,6 +151,6 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,Base
 
     @Override
     public void onLoadMoreRequested() {
-        paging( "http://oxjde2kpq.bkt.clouddn.com/index_2_data.json");
+        paging("http://oxjde2kpq.bkt.clouddn.com/index_2_data.json");
     }
 }
