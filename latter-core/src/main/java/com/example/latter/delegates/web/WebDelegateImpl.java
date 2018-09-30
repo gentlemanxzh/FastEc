@@ -18,7 +18,7 @@ import com.example.latter.delegates.web.route.WebViewInitializer;
  * @function WebView的具体实现
  */
 
-public class WebDelegateImpl extends WebDelegate {
+public class WebDelegateImpl extends WebDelegate implements IUrlHandler {
     private IPageLoadListener mIPageLoadListener = null;
 
     /**
@@ -47,20 +47,13 @@ public class WebDelegateImpl extends WebDelegate {
         return getWebView();
     }
 
-
-
     @Override
-    public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
-        if (getUrl()!=null){
-            //用原生的方式模拟Web跳转,并进行页面加载
-            Router.getInstance().loadPage(this,getUrl());
-
-        }
-
+    public IWebViewInitializer setInitializer() {
+        return this;
     }
 
     @Override
-    public IWebViewInitializer setInitializer() {
+    public IUrlHandler setUrlHandler() {
         return this;
     }
 
@@ -82,4 +75,11 @@ public class WebDelegateImpl extends WebDelegate {
     }
 
 
+    @Override
+    public void handleUrl(WebDelegate delegate) {
+        if (getUrl() != null) {
+            //用原生的方式模拟Web跳转并进行页面加载
+            Router.getInstance().loadPage(this, getUrl());
+        }
+    }
 }

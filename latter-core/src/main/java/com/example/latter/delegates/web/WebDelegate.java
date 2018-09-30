@@ -2,6 +2,7 @@ package com.example.latter.delegates.web;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebView;
@@ -38,6 +39,8 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewIniti
      */
     public abstract IWebViewInitializer setInitializer();
 
+    public abstract  IUrlHandler setUrlHandler();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,15 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewIniti
         mUrl = args.getString(RouteKeys.URL.name());
         initWebView();
     }
+
+    @Override
+    public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
+        final IUrlHandler handler = setUrlHandler();
+        if (handler != null) {
+            handler.handleUrl(this);
+        }
+    }
+
 
     /**
      * 初始化WebView
