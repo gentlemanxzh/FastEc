@@ -71,7 +71,6 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
     }
 
     void showRationaleDialog(final PermissionRequest request) {
-
         if (getContext() != null) {
             new AlertDialog.Builder(getContext())
                     .setPositiveButton("同意使用", new DialogInterface.OnClickListener() {

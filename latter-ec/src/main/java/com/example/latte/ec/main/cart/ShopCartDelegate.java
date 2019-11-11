@@ -190,7 +190,7 @@ public class ShopCartDelegate extends BottomItemDelegate implements ICartItemLis
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         RxRestClient.builder()
-                .url("http://oxjde2kpq.bkt.clouddn.com/shop_cart_data.json")
+                .url("http://mock.fulingjie.com/mock/data/shop_cart_data.json")
                 .build()
                 .get()
                 .subscribeOn(Schedulers.io())

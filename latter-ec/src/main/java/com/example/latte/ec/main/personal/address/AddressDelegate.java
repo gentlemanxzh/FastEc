@@ -39,7 +39,7 @@ public class AddressDelegate extends LatteDelegate {
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
         RxRestClient.builder()
-                .url("http://oxjde2kpq.bkt.clouddn.com/address.json")
+                .url("http://mock.fulingjie.com/mock/data/address.json")
                 .build()
                 .get()
                 .subscribeOn(Schedulers.io())

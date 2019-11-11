@@ -149,7 +149,7 @@ public class GoodsDetailDelegate extends LatteDelegate implements AppBarLayout.O
 
     private void initData() {
         RxRestClient.builder()
-                .url("http://oxjde2kpq.bkt.clouddn.com/goods_detail_data_1.json")
+                .url("http://mock.fulingjie.com/mock/data/goods_detail_data_1.json")
                 .build()
                 .get()
                 .subscribeOn(Schedulers.io())

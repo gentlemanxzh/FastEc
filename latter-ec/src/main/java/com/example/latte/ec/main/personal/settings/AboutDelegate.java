@@ -36,7 +36,7 @@ public class AboutDelegate extends LatteDelegate {
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
 
         RxRestClient.builder()
-                .url("http://oxjde2kpq.bkt.clouddn.com/about.json")
+                .url("http://mock.fulingjie.com/mock/data/about.json")
                 .loader(getContext())
                 .build()
                 .get()

@@ -52,7 +52,7 @@ public class SignInDelegate extends LatteDelegate {
         if (checkForm()){
 
             RxRestClient.builder()
-                    .url("http://oxjde2kpq.bkt.clouddn.com/user_profile.json")
+                    .url("user_profile.json")
                     .params("email", mEmail.getText().toString())
                     .params("password", mPassword.getText().toString())
                     .build()

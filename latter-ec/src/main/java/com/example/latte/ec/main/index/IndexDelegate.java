@@ -91,7 +91,7 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
         super.onLazyInitView(savedInstanceState);
         initRefreshLayout();
         initRecyclerView();
-        mRefreshHandler.firstPage("http://oxjde2kpq.bkt.clouddn.com/index_data.json");
+        mRefreshHandler.firstPage("http://mock.fulingjie.com/mock/data/index_data.json");
     }
 
     @Override

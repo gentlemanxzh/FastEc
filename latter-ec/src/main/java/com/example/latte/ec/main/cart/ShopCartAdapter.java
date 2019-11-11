@@ -129,7 +129,7 @@ public class ShopCartAdapter extends MultipleRecyclerAdapter {
                         final int currentCount = entity.getField(ShortCartItemFields.COUNT);
                         if (Integer.parseInt(tvCount.getText().toString()) > 1) {
                             RxRestClient.builder()
-                                    .url("http://oxjde2kpq.bkt.clouddn.com/shop_cart_data.json")
+                                    .url("http://mock.fulingjie.com/mock/data/shop_cart_data.json")
                                     .loader(mContext)
                                     .params("count", currentCount)
                                     .build()
@@ -174,7 +174,7 @@ public class ShopCartAdapter extends MultipleRecyclerAdapter {
                     public void onClick(View view) {
                         final int currentCount = entity.getField(ShortCartItemFields.COUNT);
                         RxRestClient.builder()
-                                .url("http://oxjde2kpq.bkt.clouddn.com/shop_cart_data.json")
+                                .url("http://mock.fulingjie.com/mock/data/shop_cart_data.json")
                                 .loader(mContext)
                                 .params("count", currentCount)
                                 .build()

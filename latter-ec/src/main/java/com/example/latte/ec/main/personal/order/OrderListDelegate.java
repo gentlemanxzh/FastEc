@@ -58,7 +58,7 @@ public class OrderListDelegate extends LatteDelegate {
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         RxRestClient.builder()
-                .url("http://oxjde2kpq.bkt.clouddn.com/order_list.json")
+                .url("http://mock.fulingjie.com/mock/data/order_list.json")
                 .loader(getContext())
                 .params("type",mType)
                 .build()

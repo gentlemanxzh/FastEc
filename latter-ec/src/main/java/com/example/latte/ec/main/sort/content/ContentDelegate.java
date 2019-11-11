@@ -58,7 +58,7 @@ public class ContentDelegate extends LatteDelegate{
 
     private void initData(){
         RxRestClient.builder()
-                .url("http://oxjde2kpq.bkt.clouddn.com/sort_content_data_"+mContentId+".json")
+                .url("http://mock.fulingjie.com/mock/data/sort_content_data_"+mContentId+".json")
                 .build()
                 .get()
                 .observeOn(AndroidSchedulers.mainThread())

@@ -63,7 +63,7 @@ public class SignUpDelegate extends LatteDelegate {
     void onClickSignUp() {
         if (checkForm()) {
             RxRestClient.builder()
-                    .url("http://oxjde2kpq.bkt.clouddn.com/user_profile.json")
+                    .url("http://mock.fulingjie.com/mock/data/user_profile.json")
                     .params("name", mName.getText().toString())
                     .params("email", mEmail.getText().toString())
                     .params("phone", mPhone.getText().toString())

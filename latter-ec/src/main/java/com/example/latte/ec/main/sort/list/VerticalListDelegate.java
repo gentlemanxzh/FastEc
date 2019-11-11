@@ -62,7 +62,7 @@ public class VerticalListDelegate extends LatteDelegate {
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         RxRestClient.builder()
-                .url("http://oxjde2kpq.bkt.clouddn.com/sort_list_data.json")
+                .url("http://mock.fulingjie.com/mock/data/sort_list_data.json")
                 .loader(getContext())
                 .build()
                 .get()
